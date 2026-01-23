@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { qualifyLead, generateCustomPitch } from '@/lib/groq-intelligence';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * API de Inteligencia BTraffic - Powered by Groq
  * Endpoint: /api/intelligence/qualify

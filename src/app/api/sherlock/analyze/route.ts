@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { runSherlockAudit } from '@/lib/sherlock-engine';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
     try {
         const { url, email, leadMetadata } = await req.json();
