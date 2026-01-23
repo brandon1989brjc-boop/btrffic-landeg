@@ -119,7 +119,7 @@ export default function AdminLeadsPage() {
 
             <main className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Listado de Leads */}
-                <div className="lg:col-span-8 space-y-4">
+                <div className={`${selectedLead ? 'hidden lg:block' : 'block'} lg:col-span-8 space-y-4`}>
                     {/* Barra de Búsqueda */}
                     <div className="relative group mb-6">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-btraffic-lime transition-all" size={20} />
@@ -138,8 +138,8 @@ export default function AdminLeadsPage() {
                                 layoutId={lead.id}
                                 onClick={() => setSelectedLead(lead)}
                                 className={`group relative p-6 rounded-3xl border transition-all cursor-pointer overflow-hidden ${selectedLead?.id === lead.id
-                                        ? 'bg-btraffic-lime/5 border-btraffic-lime/40'
-                                        : 'bg-white/5 border-white/10 hover:border-white/20'
+                                    ? 'bg-btraffic-lime/5 border-btraffic-lime/40'
+                                    : 'bg-white/5 border-white/10 hover:border-white/20'
                                     }`}
                             >
                                 <div className="flex justify-between items-center">
