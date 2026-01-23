@@ -1,9 +1,9 @@
 import Groq from "groq-sdk";
 
-// Cliente Groq para toda la aplicación
-const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY || ''
-});
+const groqKey = process.env.GROQ_API_KEY;
+
+// Cliente Groq - Inicialización segura para evitar errores de build
+const groq = groqKey ? new Groq({ apiKey: groqKey }) : null;
 
 /**
  * Arquitectura de Inteligencia BTraffic
@@ -32,8 +32,8 @@ export interface IntelligenceResponse {
  */
 export async function runIntelligence(request: IntelligenceRequest): Promise<IntelligenceResponse> {
     try {
-        if (!process.env.GROQ_API_KEY) {
-            throw new Error("GROQ_API_KEY no configurada en el servidor");
+        if (!groq) {
+            throw new Error("Motor de Inteligencia Groq no inicializado. Verifique la API Key.");
         }
 
         const completion = await groq.chat.completions.create({

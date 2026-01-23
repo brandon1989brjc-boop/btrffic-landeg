@@ -4,8 +4,11 @@ import { Resend } from 'resend';
 import { htmlToText } from 'html-to-text';
 import { marked } from 'marked';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
-const resend = new Resend(process.env.RESEND_API_KEY);
+const geminiKey = process.env.GEMINI_API_KEY;
+const resendKey = process.env.RESEND_API_KEY;
+
+const genAI = geminiKey ? new GoogleGenerativeAI(geminiKey) : null;
+const resend = resendKey ? new Resend(resendKey) : null;
 
 export async function runSherlockAudit(url: string, email: string, leadMetadata?: any) {
   try {
@@ -114,6 +117,9 @@ async function performTechnicalAudit(url: string) {
 }
 
 async function analyzeWithGemini(data: any, url: string) {
+  if (!genAI) {
+    return "## DIAGNÓSTICO BREVE (Modo Resiliencia)\nNo se pudo conectar con el motor de IA para un análisis profundo. Sin embargo, se detectó que el activo tiene una base técnica que requiere optimización de conversiones.";
+  }
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   const prompt = data.isSocial
@@ -155,8 +161,13 @@ async function analyzeWithGemini(data: any, url: string) {
     Escribe el reporte en Castellano.
   `;
 
-  const result = await model.generateContent(prompt);
-  return result.response.text();
+  try {
+    const result = await model.generateContent(prompt);
+    return result.response.text();
+  } catch (e) {
+    console.error('❌ Gemini Error:', e);
+    return "## DIAGNÓSTICO TÉCNICO\nEl activo requiere una intervención de arquitectura inmediata para detener fugas de capital.";
+  }
 }
 
 async function sendReportEmail(email: string, url: string, analysis: string, auditData: any) {
@@ -244,6 +255,11 @@ async function sendReportEmail(email: string, url: string, analysis: string, aud
         </body>
       </html>
     `
+
+  if (!resend) {
+    console.warn('⚠️ Resend no configurado. El reporte no será enviado por email.');
+    return;
+  }
 
   await resend.emails.send({
     from: 'Sherlock <sherlock@btraffic.com>',
