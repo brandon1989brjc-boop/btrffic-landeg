@@ -4,7 +4,10 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const n8nWebhookUrl = process.env.N8N_LEAD_WEBHOOK_URL || '';
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Inicialización segura: No crashea si faltan las claves
+const supabase = (supabaseUrl && supabaseKey)
+    ? createClient(supabaseUrl, supabaseKey)
+    : null;
 
 export interface Lead {
     name: string;
@@ -27,8 +30,8 @@ export async function orchestrateLead(leadData: Lead) {
     console.log('🚀 Orquestando nuevo lead:', leadData.email);
 
     try {
-        // 1. Guardar en Supabase (Si las claves existen)
-        if (supabaseUrl && supabaseKey) {
+        // 1. Guardar en Supabase (Si las claves existen y el cliente se inicializó)
+        if (supabaseUrl && supabaseKey && supabase) {
             const { data, error } = await supabase
                 .from('leads_btraffic')
                 .upsert([
