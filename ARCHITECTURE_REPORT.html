@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTraffic | Auditoría Forense de Arquitectura Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #A2FF00;
+            --bg: #050505;
+            --panel: #111111;
+            --border: #222222;
+            --text-main: #ffffff;
+            --text-dim: #888888;
+            --font-main: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .glow {
+            position: fixed;
+            top: 0; left: 50%;
+            width: 100vw; height: 100vh;
+            background: radial-gradient(circle at 50% 0%, rgba(162, 255, 0, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        header {
+            padding: 80px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .badge {
+            background: rgba(162, 255, 0, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: clamp(40px, 8vw, 84px);
+            font-weight: 900;
+            line-height: 0.9;
+            text-transform: uppercase;
+            letter-spacing: -4px;
+            margin-bottom: 20px;
+        }
+
+        span.accent { color: var(--primary); }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .section {
+            margin-bottom: 100px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-title .line {
+            height: 1px;
+            flex-grow: 1;
+            background: var(--border);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 24px;
+            transition: border-color 0.3s ease;
+        }
+
+        .card:hover { border-color: var(--primary); }
+
+        .card h3 {
+            color: var(--primary);
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-family: var(--font-mono);
+        }
+
+        .card p { color: var(--text-dim); font-size: 15px; }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .tech-tag {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: var(--font-mono);
+            border: 1px solid #333;
+        }
+
+        .philosophy {
+            background: linear-gradient(135deg, #111 0%, #050505 100%);
+            padding: 60px;
+            border-radius: 40px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .philosophy::after {
+            content: "80/20";
+            position: absolute;
+            right: -20px; bottom: -20px;
+            font-size: 160px;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.02);
+            line-height: 1;
+        }
+
+        .pipeline-step {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .step-num {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--primary);
+            opacity: 0.3;
+            font-family: var(--font-mono);
+        }
+
+        .step-content h4 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        footer {
+            text-align: center;
+            padding: 100px 20px;
+            background: #000;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-text {
+            color: var(--text-dim);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 40px 20px; }
+            .philosophy { padding: 30px; }
+            .pipeline-step { flex-direction: column; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow"></div>
+
+    <header>
+        <div class="badge">Technical Reference • v2.1.0</div>
+        <h1>Composición del <br><span class="accent">Ecosistema BTraffic</span></h1>
+        <p style="color: var(--text-dim); max-width: 600px; margin: 0 auto;">Análisis técnico sobre la arquitectura de captura, cualificación y orquestación de activos digitales financieros.</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- SECCIÓN 1: ADN -->
+        <section class="section">
+            <div class="section-title">
+                <h2>El Porqué y Para Qué</h2>
+                <div class="line"></div>
+            </div>
+            <div class="philosophy">
+                <p style="font-size: 20px; font-weight: 300; color: #ccc; margin-bottom: 30px;">
+                    BTraffic no es una web corporativa; es una <strong>Fábrica de Activos Digitales</strong>. Cada componente está diseñado para transformar el tráfico frío en capital medible, eliminando la fricción humana mediante orquestación de IA.
+                </p>
+                <div class="grid">
+                    <div>
+                        <h4 style="color: var(--primary); margin-bottom: 10px;">Propósito Principal</h4>
+                        <p>Demostrar autoridad técnica instantánea mediante diagnósticos forenses (Sherlock) y automatizar el embudo de ventas sin intervención manual.</p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--primary); margin-bottom: 10px;">Valor Estratégico</h4>
+                        <p>Convertir el sitio web de un "gasto de marketing" en un "activo financiero" que opera con lógica 80/20 y escala infinitamente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: STACK -->
+        <section class="section">
+            <div class="section-title">
+                <h2>Arquitectura Técnica</h2>
+                <div class="line"></div>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <h3>Core Framework</h3>
+                    <p>Next.js 15.2 (Latest Stable) con React 19. Optimizado para Core Web Vitals y carga bajo los 800ms.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">App Router</span>
+                        <span class="tech-tag">Server Actions</span>
+                        <span class="tech-tag">TypeScript Strict</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Motores de Inteligencia</h3>
+                    <p>Enjambre de modelos distribuidos para análisis de velocidad e inteligencia de cualificación.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Groq (Llama 3.3 70B)</span>
+                        <span class="tech-tag">Gemini 1.5 Flash</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Persistencia y Tracking</h3>
+                    <p>Base de datos de activos para leads y sistema de logs forenses para seguimiento de ROI.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Supabase</span>
+                        <span class="tech-tag">n8n (Webhooks)</span>
+                        <span class="tech-tag">Vercel Edge</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: FUNCIONALIDADES -->
+        <section class="section">
+            <div class="section-title">
+                <h2>Funcionalidad & Orquestación</h2>
+                <div class="line"></div>
+            </div>
+            
+            <div class="pipeline-step">
+                <div class="step-num">01</div>
+                <div class="step-content">
+                    <h4>Diagnóstico Forense (Sherlock Engine)</h4>
+                    <p>Motor de auditoría en tiempo real que escanea SSL, tiempos de carga, píxeles de Facebook y tags de Google. Genera un reporte dinámico de "Fugas de Capital" que impacta emocionalmente al lead.</p>
+                </div>
+            </div>
+
+            <div class="pipeline-step">
+                <div class="step-num step-num-2">02</div>
+                <div class="step-content">
+                    <h4>Cualificación Inteligente (Brain)</h4>
+                    <p>Usa IA para clasificar al lead según su cargo, ingresos declarados y "pain point". Calcula un Score de 0-100 para priorizar la atención comercial.</p>
+                </div>
+            </div>
+
+            <div class="pipeline-step">
+                <div class="step-num">03</div>
+                <div class="step-content">
+                    <h4>Orquestación de Activos</h4>
+                    <p>Sincronización instantánea con n8n y Supabase. El lead entra al CRM y recibe un email forense personalizado sin que nadie haya movido un dedo.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: TRACKING -->
+        <section class="section" style="background: rgba(162,255,0,0.02); padding: 40px; border-radius: 20px;">
+            <div class="section-title">
+                <h2>Tracking & Datos</h2>
+                <div class="line"></div>
+            </div>
+            <p style="font-family: var(--font-mono); font-size: 14px; color: var(--text-dim);">
+                // Estructura de Captura BTraffic<br>
+                {<br>
+                &nbsp;&nbsp;"input": "URL + Email + Metadatos",<br>
+                &nbsp;&nbsp;"processing": "Technical Audit + AI Analysis",<br>
+                &nbsp;&nbsp;"persistence": "Supabase Asset DB",<br>
+                &nbsp;&nbsp;"output": "Custom Report + Automation Alert"<br>
+                }
+            </p>
+        </section>
+
+    </div>
+
+    <footer>
+        <p class="footer-text">ADN BTraffic • El Estratega Pragmático</p>
+        <p style="margin-top: 20px; font-size: 14px; color: #444;">Sin Dato No Hay Relato • 2026</p>
+    </footer>
+</body>
+</html>
