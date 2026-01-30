@@ -19,40 +19,60 @@ export default function LessonPage() {
     const params = useParams();
     const id = params.id as string || '1';
 
-    // Mapeo real de videos de NotebookLM (A completar con los enlaces del Studio)
-    const videoMapping: Record<string, string> = {
-        '1': 'URL_VIDEO_1',
-        '2': 'URL_VIDEO_2',
-        '3': 'URL_VIDEO_3',
-        '4': 'URL_VIDEO_4',
-        '5': 'URL_VIDEO_5',
-        '6': 'URL_VIDEO_6',
-        '7': 'URL_VIDEO_7',
-        '8': 'URL_VIDEO_8',
-        '9': 'URL_VIDEO_9',
-        '10': 'URL_VIDEO_10',
-        '11': 'URL_VIDEO_11',
-        '12': 'URL_VIDEO_12',
-        '13': 'URL_VIDEO_13',
-        '14': 'URL_VIDEO_14',
-        '15': 'URL_VIDEO_15',
-        '16': 'URL_VIDEO_16',
-        '17': 'URL_VIDEO_17',
-        '18': 'URL_VIDEO_18',
-        '19': 'URL_VIDEO_19',
-        '20': 'URL_VIDEO_20',
+    // List of sessions that actually have local videos
+    const sessionsWithVideo = ['1', '2', '3', '4', '5', '6', '8', '12', '15', '16', '17', '20'];
+
+    const getLocalVideoPath = (sessionId: string) => {
+        if (sessionsWithVideo.includes(sessionId)) {
+            return `/assets/academy/videos/session_${sessionId.padStart(2, '0')}.mp4`;
+        }
+        return null; // Fallback if no video exists
     };
 
-    // Mock lesson data (this would come from a CMS or DB)
+    const sessionTitleMapping: Record<string, string> = {
+        '1': 'De la Web Pasiva al Activo de Datos',
+        '2': 'La Identidad del Estratega Pragmático',
+        '3': 'El Manifiesto Btraffic',
+        '4': 'Softuarización y Regla 80/20',
+        '5': 'Orquestación con n8n',
+        '6': 'Inteligencia con GraphRAG',
+        '7': 'Google AI Stack',
+        '8': 'Lógica vs. Agentes',
+        '9': "El Gancho Maestro - 'Regalo de Venta Diaria'",
+        '10': 'Auditoría en Vivo - Cualificación por Fugas',
+        '11': 'La Propuesta Irrechazable - ROI',
+        '12': 'El Cierre de Autoridad',
+        '13': 'El Modelo Partnership',
+        '14': 'Suscripción y Recurrencia',
+        '15': 'Onboarding del Ecosistema',
+        '16': 'Reporte de Transparencia',
+        '17': 'Eficiencia Operativa',
+        '18': 'Inteligencia Total - Las 4 Capas',
+        '19': 'Diversificación de Portfolio',
+        '20': 'El Futuro del Trabajo - Ecosistema 2026',
+    };
+
     const lesson = {
         id,
-        title: id === '1' ? 'De la Web Pasiva al Activo de Datos' : `Sesión ${id} de Btraffic Academy`,
-        module: 'Módulo de Formación',
-        description: 'En esta sesión aprenderás los protocolos avanzados de Btraffic para la gestión de activos digitales.',
-        videoUrl: videoMapping[id] || 'https://notebooklm.google.com/notebook/6455d30e-358e-4737-b0c5-ef2e97e2b51d',
+        title: sessionTitleMapping[id] || `Sesión ${id} de Btraffic Academy`,
+        module: parseInt(id) <= 4 ? 'Módulo 1: ADN y Mentalidad' :
+            parseInt(id) <= 8 ? 'Módulo 2: Infraestructura y Datos' :
+                parseInt(id) <= 12 ? 'Módulo 3: Estrategia de Ventas' :
+                    parseInt(id) <= 16 ? 'Módulo 4: Operaciones y Delivery' :
+                        'Módulo 5: Escala y Futuro',
+        description: `Protocolo avanzado de Btraffic para la Sesión ${id}.`,
+        videoUrl: getLocalVideoPath(id),
         resources: [
-            { name: `SESION_${id.toString().padStart(2, '0')}_BTRAFFIC.pdf`, type: 'Estructura' },
-            { name: `T-BTRAFFIC_P_S${id.toString().padStart(2, '0')}.pdf`, type: 'Profundización' }
+            {
+                name: `SESION_${id.padStart(2, '0')}_BTRAFFIC.pdf`,
+                type: 'Estructura',
+                path: `/assets/academy/resources/SESION_${id.padStart(2, '0')}_BTRAFFIC.pdf`
+            },
+            {
+                name: `T-BTRAFFIC_P_S${id.padStart(2, '0')}.pdf`,
+                type: 'Profundización',
+                path: `/assets/academy/resources/T-BTRAFFIC_P_S${id.padStart(2, '0')}.pdf`
+            }
         ]
     };
 
@@ -75,20 +95,30 @@ export default function LessonPage() {
                     </div>
                 </div>
 
-                {/* Video Player Placeholder */}
+                {/* Video Player */}
                 <div className="relative aspect-video rounded-3xl bg-black border border-white/5 overflow-hidden shadow-2xl shadow-black/50">
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 bg-gradient-to-br from-btraffic-dark via-transparent to-btraffic-lime/5">
-                        <div className="w-20 h-20 rounded-full bg-btraffic-lime flex items-center justify-center cursor-pointer hover:scale-110 transition-transform shadow-2xl shadow-btraffic-lime/20">
-                            <Play size={32} className="text-black fill-black ml-1" />
+                    {lesson.videoUrl ? (
+                        <video
+                            src={lesson.videoUrl}
+                            controls
+                            className="w-full h-full object-cover"
+                            poster="/og-image.png"
+                        />
+                    ) : (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 bg-gradient-to-br from-btraffic-dark via-transparent to-btraffic-lime/5">
+                            <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+                                <Play size={32} className="text-gray-500 fill-gray-500 ml-1 opacity-20" />
+                            </div>
+                            <div className="text-center space-y-2">
+                                <p className="text-xs font-black uppercase tracking-widest text-btraffic-lime">
+                                    Sesión en producción
+                                </p>
+                                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tight">
+                                    El contenido estratégico estará disponible pronto
+                                </p>
+                            </div>
                         </div>
-                        <p className="text-xs font-black uppercase tracking-widest text-gray-400">
-                            Haz clic para iniciar el Vídeo de la Sesión {id}
-                        </p>
-                    </div>
-                    {/* Progress overlay */}
-                    <div className="absolute bottom-6 left-6 right-6 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                        <div className="h-full bg-btraffic-lime w-1/3 shadow-[0_0_10px_rgba(162,255,0,0.5)]" />
-                    </div>
+                    )}
                 </div>
 
                 {/* Lesson Info */}
@@ -133,12 +163,21 @@ export default function LessonPage() {
                                     <p className="text-[9px] font-black text-gray-500 uppercase tracking-widest">{res.type}</p>
                                 </div>
                                 <div className="flex gap-2">
-                                    <button className="p-2 bg-white/5 rounded-lg text-gray-400 hover:text-btraffic-blue transition-colors">
+                                    <a
+                                        href={res.path}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="p-2 bg-white/5 rounded-lg text-gray-400 hover:text-btraffic-blue transition-colors"
+                                    >
                                         <Eye size={16} />
-                                    </button>
-                                    <button className="p-2 bg-white/5 rounded-lg text-gray-400 hover:text-btraffic-lime transition-colors">
+                                    </a>
+                                    <a
+                                        href={res.path}
+                                        download
+                                        className="p-2 bg-white/5 rounded-lg text-gray-400 hover:text-btraffic-lime transition-colors"
+                                    >
                                         <Download size={16} />
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         ))}
