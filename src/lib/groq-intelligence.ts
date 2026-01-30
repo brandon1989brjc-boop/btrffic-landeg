@@ -6,7 +6,7 @@ const groqKey = process.env.GROQ_API_KEY;
 const groq = groqKey ? new Groq({ apiKey: groqKey }) : null;
 
 /**
- * Arquitectura de Inteligencia BTraffic
+ * Arquitectura de Inteligencia Btraffic
  * Groq actúa como el cerebro principal para:
  * - Análisis contextual de leads
  * - Generación de respuestas personalizadas
@@ -93,7 +93,7 @@ export async function qualifyLead(leadData: {
     recommendedAction: string;
     personalizedMessage: string;
 }> {
-    const systemRole = `Eres el "Stratega de Cualificación" de BTraffic.
+    const systemRole = `Eres el "Stratega de Cualificación" de Btraffic.
 Tu labor es analizar leads potenciales y determinar si son candidatos para nuestros servicios de automatización empresarial premium.
 
 CRITERIOS DE CUALIFICACIÓN:
@@ -171,7 +171,7 @@ export async function generateCustomPitch(leadProfile: {
     industry?: string;
     pain: string;
 }): Promise<string> {
-    const systemRole = `Eres Brandon de BTraffic, el estratega de "Ecosistemas Digitales como Activos Financieros".
+    const systemRole = `Eres Brandon de Btraffic, el estratega de "Ecosistemas Digitales como Activos Financieros".
 
 Tu filosofía: "Sin dato no hay relato. Activo vs Gasto."
 

@@ -22,7 +22,7 @@ export default function LeaderboardPage() {
                 </div>
                 <h1 className="text-4xl md:text-5xl font-black tracking-tighter uppercase">Líderes de <span className="text-btraffic-lime">Inteligencia</span></h1>
                 <p className="text-gray-400 max-w-xl mx-auto text-sm font-medium">
-                    En BitTraffic el estatus se gana mediante la aportación de valor y el dominio del dato. Solo los mejores llegan al Consejo de Arquitectos.
+                    En Btraffic el estatus se gana mediante la aportación de valor y el dominio del dato. Solo los mejores llegan al Consejo de Arquitectos.
                 </p>
             </div>
 

@@ -90,7 +90,7 @@ export default function Home() {
                     <div className="w-8 h-8 rounded bg-btraffic-lime flex items-center justify-center border border-white/10">
                         <span className="font-black text-black text-sm">B</span>
                     </div>
-                    <span className="font-black text-2xl tracking-tighter uppercase">BTraffic</span>
+                    <span className="font-black text-2xl tracking-tighter uppercase">Btraffic</span>
                 </div>
                 <div className="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest text-gray-400 items-center">
                     <a href="#metodo" className="hover:text-btraffic-lime transition-colors">Nuestro Método</a>
@@ -138,7 +138,7 @@ export default function Home() {
                             }}
                             className="btn-premium"
                         >
-                            Iniciar Diagnóstico BTraffic
+                            Iniciar Diagnóstico Btraffic
                         </button>
                         <button className="px-10 py-5 rounded-full border border-white/10 font-bold hover:bg-white/5 transition-all flex items-center gap-2 text-sm uppercase tracking-widest text-white">
                             Ver el Método Swarm <ArrowRight size={18} />
@@ -194,7 +194,7 @@ export default function Home() {
             {/* Sherlock Diagnostic Section */}
             <section id="sherlock" className="py-40 px-8 max-w-7xl mx-auto flex flex-col items-center">
                 <div className="text-center mb-16">
-                    <h2 className="text-5xl md:text-7xl font-black mb-6 uppercase tracking-tight">¿Es su negocio un <br /><span className="text-btraffic-lime italic">Candidato BTraffic</span>?</h2>
+                    <h2 className="text-5xl md:text-7xl font-black mb-6 uppercase tracking-tight">¿Es su negocio un <br /><span className="text-btraffic-lime italic">Candidato Btraffic</span>?</h2>
                     <p className="text-gray-500 max-w-xl mx-auto font-medium">Nuestro filtro agéntico Sherlock analiza su estructura actual para determinar si podemos generar un ROI masivo de inmediato.</p>
                 </div>
                 <SherlockWidget />

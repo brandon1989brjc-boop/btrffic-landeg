@@ -18,7 +18,7 @@ import Link from 'next/link';
 const feedPosts = [
     {
         id: 1,
-        author: { name: 'Brandon BTraffic', role: 'Founder', avatar: 'BB' },
+        author: { name: 'Brandon Btraffic', role: 'Founder', avatar: 'BB' },
         time: '2h',
         category: 'ESTRATEGIA',
         title: 'El Gancho de Venta Diaria: ¿Por qué funciona?',
@@ -33,7 +33,7 @@ const feedPosts = [
         time: '5h',
         category: 'WINS',
         title: '¡Primer cliente cerrado usando el Auditor Junior!',
-        content: 'No me lo creo. Apliqué el framework de la sesión 10 en una llamada de 15 minutos. El cliente vio las fugas de datos y no puso objeción al precio. ¡BitTraffic funciona!',
+        content: 'No me lo creo. Apliqué el framework de la sesión 10 en una llamada de 15 minutos. El cliente vio las fugas de datos y no puso objeción al precio. ¡Btraffic funciona!',
         likes: 128,
         comments: 45,
         isPinned: false

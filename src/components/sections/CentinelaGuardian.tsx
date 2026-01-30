@@ -8,7 +8,7 @@ const INSIGHTS = [
     {
         icon: <ShieldCheck className="text-lime-500" size={18} />,
         title: "OPERACIÓN 24/7",
-        text: "El 85% de los leads se pierden por responder fuera de horario. Los agentes BTraffic no descansan."
+        text: "El 85% de los leads se pierden por responder fuera de horario. Los agentes Btraffic no descansan."
     },
     {
         icon: <Zap className="text-purple-500" size={18} />,
@@ -18,12 +18,12 @@ const INSIGHTS = [
     {
         icon: <TrendingUp className="text-blue-500" size={18} />,
         title: "MÉTRICA FORENSE",
-        text: "Sin dato no hay relato. El tracking profundo de BTraffic detecta fugas de capital en tiempo real."
+        text: "Sin dato no hay relato. El tracking profundo de Btraffic detecta fugas de capital en tiempo real."
     },
     {
         icon: <Info className="text-orange-500" size={18} />,
         title: "ROI GARANTIZADO",
-        text: "Un ecosistema digital BTraffic se paga solo en menos de 45 días mediante la optimización del CAC."
+        text: "Un ecosistema digital Btraffic se paga solo en menos de 45 días mediante la optimización del CAC."
     }
 ];
 

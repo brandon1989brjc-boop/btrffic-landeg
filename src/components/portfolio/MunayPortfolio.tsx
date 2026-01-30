@@ -51,7 +51,7 @@ export default function MunayPortfolio() {
                     <div className="w-8 h-8 rounded bg-btraffic-lime flex items-center justify-center border border-white/10">
                         <span className="font-black text-black text-sm">B</span>
                     </div>
-                    <span className="font-black text-2xl tracking-tighter uppercase">BTraffic</span>
+                    <span className="font-black text-2xl tracking-tighter uppercase">Btraffic</span>
                 </Link>
                 <div className="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest text-gray-400 items-center">
                     <Link href="/#metodo" className="hover:text-btraffic-lime transition-colors">Nuestro Método</Link>
@@ -264,7 +264,7 @@ export default function MunayPortfolio() {
             {/* Footer / Back to Portfolio */}
             <footer className="py-10 border-t border-white/10 px-6">
                 <div className="max-w-6xl mx-auto flex justify-between items-center text-[10px] font-bold uppercase tracking-[0.2em] text-gray-600">
-                    <span>BTraffic Agency © 2026</span>
+                    <span>Btraffic Agency © 2026</span>
                     <Link href="/portfolio" className="text-btraffic-lime hover:text-white transition-colors cursor-pointer">
                         Ver Casos de Éxito
                     </Link>

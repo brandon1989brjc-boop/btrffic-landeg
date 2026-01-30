@@ -56,7 +56,7 @@ body {
     animation: marquee 40s linear infinite;
 }
 
-/* Ajustes de Responsividad Global BTraffic */
+/* Ajustes de Responsividad Global Btraffic */
 @media (max-width: 768px) {
     h1 {
         font-size: 3.5rem !important;

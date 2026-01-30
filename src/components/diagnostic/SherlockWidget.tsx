@@ -102,8 +102,8 @@ export function SherlockWidget() {
     const handleWhatsAppRedirect = () => {
         const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "34661139454";
         const message = isQualified
-            ? `Hola BTraffic, soy ${data.name} (${data.role}). He completado el diagnóstico forense de ${data.web}. Soy CANDIDATO POSITIVO. Mi número de tranquilidad es ${data.tranquilityNumber}. Quiero agendar la sesión estratégica.`
-            : `Hola BTraffic, soy ${data.name}. He analizado ${data.web} con Sherlock. Entiendo que mi negocio está en fase de cimentación y quiero recibir el Argumento Estratégico a medida.`;
+            ? `Hola Btraffic, soy ${data.name} (${data.role}). He completado el diagnóstico forense de ${data.web}. Soy CANDIDATO POSITIVO. Mi número de tranquilidad es ${data.tranquilityNumber}. Quiero agendar la sesión estratégica.`
+            : `Hola Btraffic, soy ${data.name}. He analizado ${data.web} con Sherlock. Entiendo que mi negocio está en fase de cimentación y quiero recibir el Argumento Estratégico a medida.`;
 
         window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
     };

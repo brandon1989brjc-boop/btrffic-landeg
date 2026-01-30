@@ -3,15 +3,15 @@ import "./globals.css";
 
 export const metadata: Metadata = {
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://btraffic.com'),
-    title: "BTraffic | Fábrica de Activos Digitales",
+    title: "Btraffic | Fábrica de Activos Digitales",
     description: "Transformamos negocios en activos financieros mediante IA profunda y automatización. Sin dato no hay relato.",
     keywords: ["IA", "Automatización", "n8n", "Ecosistemas Digitales", "ROI", "B-OS"],
-    authors: [{ name: "BTraffic" }],
+    authors: [{ name: "Btraffic" }],
     openGraph: {
-        title: "BTraffic | Digital Asset Factory",
+        title: "Btraffic | Digital Asset Factory",
         description: "Transformamos negocios en activos financieros.",
         url: "https://btraffic.com",
-        siteName: "BTraffic",
+        siteName: "Btraffic",
         images: [
             {
                 url: "/og-image.png",
@@ -42,7 +42,7 @@ export default function RootLayout({
               (function(n,8,n){
                 window.n8n_tracker = {
                   webhook: 'https://n8n.btraffic.com/webhook/analytics-web',
-                  project: 'BTraffic-Agency-V2'
+                  project: 'Btraffic-Agency-V2'
                 };
               })();
             `}}

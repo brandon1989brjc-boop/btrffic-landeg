@@ -8,8 +8,8 @@ import Link from 'next/link';
 const courses = [
     {
         id: 'estrategas-btraffic',
-        title: 'Formación de Estrategas BitTraffic',
-        description: 'Domina el ADN de BitTraffic y conviértete en un arquitecto de sistemas operativos para captar clientes de alto valor.',
+        title: 'Formación de Estrategas Btraffic',
+        description: 'Domina el ADN de Btraffic y conviértete en un arquitecto de sistemas operativos para captar clientes de alto valor.',
         image: '/academy/covers/estrategas.jpg', // Placeholder
         progress: 0,
         lessonCount: 20,
@@ -52,7 +52,7 @@ export default function ClassroomPage() {
                         BIENVENIDO AL <span className="text-btraffic-lime text-shadow-lime">CENTRO DE MANDO</span>
                     </h2>
                     <p className="text-gray-400 text-lg leading-relaxed mb-8">
-                        Aquí forjamos a los próximos líderes de la economía agéntica. Tu camino para convertirte en socio de BitTraffic comienza con el dominio del dato.
+                        Aquí forjamos a los próximos líderes de la economía agéntica. Tu camino para convertirte en socio de Btraffic comienza con el dominio del dato.
                     </p>
                     <div className="flex flex-wrap gap-4">
                         <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-xs font-bold text-btraffic-lime">

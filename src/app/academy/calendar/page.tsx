@@ -11,7 +11,7 @@ const events = [
         type: 'MASTERCLASS',
         date: '31 Ene',
         time: '18:00h - 19:30h',
-        host: 'Brandon BTraffic',
+        host: 'Brandon Btraffic',
         link: '#',
         active: true
     },
@@ -31,7 +31,7 @@ const events = [
         type: 'VENTAS',
         date: '05 Feb',
         time: '10:00h - 11:30h',
-        host: 'Brandon BTraffic',
+        host: 'Brandon Btraffic',
         link: '#',
         active: false
     }

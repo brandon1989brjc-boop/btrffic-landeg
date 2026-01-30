@@ -32,7 +32,7 @@ export default function AcademyLayout({
                             <span className="font-black text-black text-lg">B</span>
                         </div>
                         <div className="hidden sm:block">
-                            <h1 className="font-black text-xl tracking-tighter uppercase leading-none">BTraffic</h1>
+                            <h1 className="font-black text-xl tracking-tighter uppercase leading-none">Btraffic</h1>
                             <p className="text-[10px] uppercase tracking-[0.2em] text-btraffic-lime font-bold">Academy</p>
                         </div>
                     </Link>

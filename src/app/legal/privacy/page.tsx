@@ -14,7 +14,7 @@ export default function PrivacyPage() {
                     <div className="w-8 h-8 rounded bg-btraffic-lime flex items-center justify-center border border-white/10">
                         <span className="font-black text-black text-sm">B</span>
                     </div>
-                    <span className="font-black text-2xl tracking-tighter uppercase">BTraffic</span>
+                    <span className="font-black text-2xl tracking-tighter uppercase">Btraffic</span>
                 </Link>
                 <div className="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest text-gray-400 items-center">
                     <Link href="/#metodo" className="hover:text-btraffic-lime transition-colors">Nuestro Método</Link>
@@ -53,7 +53,7 @@ export default function PrivacyPage() {
                             1. Captura Forense de Datos
                         </h2>
                         <p>
-                            En el ecosistema BTraffic, tratamos los datos como activos financieros. Recopilamos información técnica y de comportamiento mediante nuestro protocolo de tracking forense (n8n-bus) para entender la intención de compra y optimizar el ROI de las campañas.
+                            En el ecosistema Btraffic, tratamos los datos como activos financieros. Recopilamos información técnica y de comportamiento mediante nuestro protocolo de tracking forense (n8n-bus) para entender la intención de compra y optimizar el ROI de las campañas.
                         </p>
                         <p>
                             Los datos capturados incluyen, pero no se limitan a: interacciones con widgets (Sherlock), tiempos de permanencia, y flujos de navegación. Todo procesado de forma segura y ética.

@@ -124,7 +124,7 @@ async function analyzeWithGemini(data: any, url: string) {
 
   const prompt = data.isSocial
     ? `
-    Eres el "Analizador Sherlock de Leads" de BTraffic. 
+    Eres el "Analizador Sherlock de Leads" de Btraffic. 
     Has detectado que el cliente NO tiene web o prefiere usar su Red Social: ${url}.
 
     DATOS TÉCNICOS:
@@ -140,7 +140,7 @@ async function analyzeWithGemini(data: any, url: string) {
     Escribe en Castellano.
     `
     : `
-    Eres el "Analizador Sherlock de Leads" de BTraffic, un consultor forense de negocios digital de élite.
+    Eres el "Analizador Sherlock de Leads" de Btraffic, un consultor forense de negocios digital de élite.
     Tu objetivo es encontrar "Fugas de Dinero" en el activo digital de un cliente potencial.
 
     DATOS TÉCNICOS DE LA WEB:
@@ -155,7 +155,7 @@ async function analyzeWithGemini(data: any, url: string) {
     1. Sé directo y pragmático.
     2. Usa títulos claros: "DIAGNÓSTICO TÉCNICO", "FUGAS DE DINERO DETECTADAS", "ARQUITECTURA DE REPARACIÓN".
     3. Cuantifica el daño (ej: "Estás perdiendo un ~15% de conversión por falta de píxel").
-    4. Usa un tono de autoridad técnica de BTraffic.
+    4. Usa un tono de autoridad técnica de Btraffic.
     5. Formato: Markdown limpio.
 
     Escribe el reporte en Castellano.
@@ -245,7 +245,7 @@ async function sendReportEmail(email: string, url: string, analysis: string, aud
               ${htmlAnalysis}
             </div>
 
-            <a href="https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '34661139454'}?text=Hola%20BTraffic,%20he%20recibido%20mi%20reporte%20Sherlock%20de%20${url}.%20Quiero%20reparar%20mis%20fugas%20de%20capital." class="btn">INICIAR REPARACIÓN ESTRATÉGICA</a>
+            <a href="https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '34661139454'}?text=Hola%20Btraffic,%20he%20recibido%20mi%20reporte%20Sherlock%20de%20${url}.%20Quiero%20reparar%20mis%20fugas%20de%20capital." class="btn">INICIAR REPARACIÓN ESTRATÉGICA</a>
 
             <div class="footer">
               <p class="footer-text">© 2026 BTRAFFIC DIGITAL ASSET FACTORY</p>

@@ -4,7 +4,7 @@ import { qualifyLead, generateCustomPitch } from '@/lib/groq-intelligence';
 export const dynamic = 'force-dynamic';
 
 /**
- * API de Inteligencia BTraffic - Powered by Groq
+ * API de Inteligencia Btraffic - Powered by Groq
  * Endpoint: /api/intelligence/qualify
  * 
  * Cualifica leads en tiempo real usando IA

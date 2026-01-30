@@ -24,7 +24,7 @@ export function CalculadoraROI({ isOpen, onClose }: CalculadoraROIProps) {
     const calcularROI = () => {
         setLoading(true);
 
-        // Simulación de lógica de negocio BTraffic
+        // Simulación de lógica de negocio Btraffic
         const fact = parseFloat(datos.facturacionMensual);
         const gasto = parseFloat(datos.gastoMarketing);
         const leads = parseFloat(datos.leadsMensuales);
@@ -34,7 +34,7 @@ export function CalculadoraROI({ isOpen, onClose }: CalculadoraROIProps) {
         const ventasActuales = leads * conv;
         const cacActual = ventasActuales > 0 ? gasto / ventasActuales : 0;
 
-        // Proyección BTraffic (Mejora estimada del 35% en eficiencia)
+        // Proyección Btraffic (Mejora estimada del 35% en eficiencia)
         const cacProyectado = cacActual * 0.65;
         const ahorroMensual = (cacActual - cacProyectado) * ventasActuales;
         const ahorroAnual = ahorroMensual * 12;
@@ -74,7 +74,7 @@ export function CalculadoraROI({ isOpen, onClose }: CalculadoraROIProps) {
                                     <Calculator size={24} />
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-black uppercase tracking-tighter text-white">Calculadora de ROI BTraffic</h2>
+                                    <h2 className="text-xl font-black uppercase tracking-tighter text-white">Calculadora de ROI Btraffic</h2>
                                     <p className="text-xs text-lime-500 font-bold uppercase tracking-widest">Architect Prime v1.0</p>
                                 </div>
                             </div>
@@ -204,7 +204,7 @@ export function CalculadoraROI({ isOpen, onClose }: CalculadoraROIProps) {
                                             <div>
                                                 <p className="text-sm font-bold text-white">Retorno sobre Inversión (ROI)</p>
                                                 <p className="text-xs text-zinc-500">
-                                                    Su ecosistema BTraffic se paga solo en menos de 45 días con un ROI anual del {resultado.roiAnual}%.
+                                                    Su ecosistema Btraffic se paga solo en menos de 45 días con un ROI anual del {resultado.roiAnual}%.
                                                 </p>
                                             </div>
                                         </div>

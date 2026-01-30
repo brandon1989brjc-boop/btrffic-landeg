@@ -1,4 +1,4 @@
-# 🚀 BTraffic Agency Web - Checklist de Lanzamiento
+# 🚀 Btraffic Agency Web - Checklist de Lanzamiento
 
 **Fecha de Parches:** 2026-01-23  
 **Estado:** ✅ LISTO PARA PRODUCCIÓN (Requiere configuración de API Keys)
@@ -98,7 +98,7 @@ pm2 save
 
 ### Test 1: Sherlock Widget
 1. Abre la web en local: `npm run dev`
-2. Scroll hasta "¿Es su negocio un Candidato BTraffic?"
+2. Scroll hasta "¿Es su negocio un Candidato Btraffic?"
 3. Completa el formulario con una URL real (ej: `google.com`)
 4. Verifica que:
    - ✅ La validación funciona (URLs inválidas bloquean el botón)

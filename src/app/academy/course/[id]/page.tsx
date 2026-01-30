@@ -20,7 +20,7 @@ const modules = [
         lessons: [
             { id: '1', title: 'De la Web Pasiva al Activo de Datos', duration: '1.5h', type: 'VIDEO + PDF' },
             { id: '2', title: 'La Identidad del Estratega Pragmático', duration: '1.5h', type: 'VIDEO + PDF' },
-            { id: '3', title: 'El Manifiesto BitTraffic', duration: '1.5h', type: 'VIDEO + PDF' },
+            { id: '3', title: 'El Manifiesto Btraffic', duration: '1.5h', type: 'VIDEO + PDF' },
             { id: '4', title: 'Softuarización y Regla 80/20', duration: '1.5h', type: 'VIDEO + PDF' },
         ]
     },
@@ -54,7 +54,7 @@ const modules = [
     {
         title: 'Módulo 5: Inteligencia Total y Escalado',
         lessons: [
-            { id: '17', title: 'Eficiencia Operativa: BitTraffic OS', duration: '1.5h', type: 'VIDEO + PDF' },
+            { id: '17', title: 'Eficiencia Operativa: Btraffic OS', duration: '1.5h', type: 'VIDEO + PDF' },
             { id: '18', title: 'Inteligencia Total: Las 4 Capas del Éxito', duration: '1.5h', type: 'VIDEO + PDF' },
             { id: '19', title: 'Diversificación de Portfolio y Sectores', duration: '1.5h', type: 'VIDEO + PDF' },
             { id: '20', title: 'El Futuro del Trabajo: Horizonte 2026', duration: '1.5h', type: 'VIDEO + PDF' },
@@ -89,10 +89,10 @@ export default function CourseDetailPage() {
                         </span>
                     </div>
                     <h1 className="text-3xl md:text-4xl font-black tracking-tighter uppercase">
-                        Formación de Estrategas BitTraffic
+                        Formación de Estrategas Btraffic
                     </h1>
                     <p className="text-gray-400 text-sm leading-relaxed max-w-xl">
-                        Aprende la metodología exacta que utilizamos en BitTraffic para transformar infraestructuras digitales en activos financieros. Domina la autoridad del dato y conviértete en un arquitecto de la nueva economía.
+                        Aprende la metodología exacta que utilizamos en Btraffic para transformar infraestructuras digitales en activos financieros. Domina la autoridad del dato y conviértete en un arquitecto de la nueva economía.
                     </p>
                 </div>
             </header>
@@ -113,7 +113,7 @@ export default function CourseDetailPage() {
                 </div>
                 <div className="flex flex-col gap-1">
                     <span className="text-[10px] font-bold text-gray-500 uppercase">Certificación</span>
-                    <span className="text-xl font-black">BitTraffic Master</span>
+                    <span className="text-xl font-black">Btraffic Master</span>
                 </div>
             </div>
 

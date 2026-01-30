@@ -8,7 +8,7 @@
 
 ## 🎯 ¿Qué hace Groq en la Landing?
 
-Groq actúa como el **cerebro inteligente** de BTraffic Agency Web. No es un chatbot visible, sino un **sistema de inteligencia invisible** que:
+Groq actúa como el **cerebro inteligente** de Btraffic Agency Web. No es un chatbot visible, sino un **sistema de inteligencia invisible** que:
 
 1. **Cualifica** leads en tiempo real (Score 0-100)
 2. **Personaliza** mensajes basados en el perfil del usuario

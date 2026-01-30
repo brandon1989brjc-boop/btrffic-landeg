@@ -89,7 +89,7 @@ export default function AccountPanel() {
                     <section className="bg-btraffic-gray/30 border border-white/5 rounded-[40px] p-8 md:p-12 space-y-8 shadow-2xl">
                         <div className="space-y-2">
                             <h2 className="text-2xl font-black uppercase tracking-tighter text-btraffic-blue">Credenciales de Acceso</h2>
-                            <p className="text-sm text-gray-400">Estas claves permiten que tu Agente BitTraffic se comunique con tu CRM personal.</p>
+                            <p className="text-sm text-gray-400">Estas claves permiten que tu Agente Btraffic se comunique con tu CRM personal.</p>
                         </div>
 
                         <div className="space-y-4">

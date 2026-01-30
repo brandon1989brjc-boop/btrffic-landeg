@@ -19,15 +19,39 @@ export default function LessonPage() {
     const params = useParams();
     const id = params.id as string || '1';
 
+    // Mapeo real de videos de NotebookLM (A completar con los enlaces del Studio)
+    const videoMapping: Record<string, string> = {
+        '1': 'URL_VIDEO_1',
+        '2': 'URL_VIDEO_2',
+        '3': 'URL_VIDEO_3',
+        '4': 'URL_VIDEO_4',
+        '5': 'URL_VIDEO_5',
+        '6': 'URL_VIDEO_6',
+        '7': 'URL_VIDEO_7',
+        '8': 'URL_VIDEO_8',
+        '9': 'URL_VIDEO_9',
+        '10': 'URL_VIDEO_10',
+        '11': 'URL_VIDEO_11',
+        '12': 'URL_VIDEO_12',
+        '13': 'URL_VIDEO_13',
+        '14': 'URL_VIDEO_14',
+        '15': 'URL_VIDEO_15',
+        '16': 'URL_VIDEO_16',
+        '17': 'URL_VIDEO_17',
+        '18': 'URL_VIDEO_18',
+        '19': 'URL_VIDEO_19',
+        '20': 'URL_VIDEO_20',
+    };
+
     // Mock lesson data (this would come from a CMS or DB)
     const lesson = {
         id,
-        title: id === '1' ? 'De la Web Pasiva al Activo de Datos' : 'Lección de BitTraffic Academy',
-        module: 'Módulo 1: ADN y Mentalidad',
-        description: 'En esta sesión aprenderás a transformar la percepción del cliente de un gasto estético a una inversión necesaria basada en datos.',
-        videoUrl: 'https://notebooklm.google.com/notebook/6455d30e-358e-4737-b0c5-ef2e97e2b51d', // Link to the brain for now
+        title: id === '1' ? 'De la Web Pasiva al Activo de Datos' : `Sesión ${id} de Btraffic Academy`,
+        module: 'Módulo de Formación',
+        description: 'En esta sesión aprenderás los protocolos avanzados de Btraffic para la gestión de activos digitales.',
+        videoUrl: videoMapping[id] || 'https://notebooklm.google.com/notebook/6455d30e-358e-4737-b0c5-ef2e97e2b51d',
         resources: [
-            { name: `SESION_${id.toString().padStart(2, '0')}_BITTRAFFIC.pdf`, type: 'Estructura' },
+            { name: `SESION_${id.toString().padStart(2, '0')}_BTRAFFIC.pdf`, type: 'Estructura' },
             { name: `T-BTRAFFIC_P_S${id.toString().padStart(2, '0')}.pdf`, type: 'Profundización' }
         ]
     };

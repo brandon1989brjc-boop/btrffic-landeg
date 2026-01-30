@@ -19,7 +19,7 @@ const projects = [
     // Placeholder para futuros proyectos
     {
         id: 'btraffic-v2',
-        title: 'BTraffic Agency V2',
+        title: 'Btraffic Agency V2',
         description: 'Infraestructura de captación forense para agencias de alto nivel.',
         status: 'En Desarrollo / Fase Beta',
         updateDate: '15/01/2026',
@@ -38,7 +38,7 @@ export default function PortfolioGrid() {
                     <div className="w-8 h-8 rounded bg-btraffic-lime flex items-center justify-center border border-white/10">
                         <span className="font-black text-black text-sm">B</span>
                     </div>
-                    <span className="font-black text-2xl tracking-tighter uppercase">BTraffic</span>
+                    <span className="font-black text-2xl tracking-tighter uppercase">Btraffic</span>
                 </Link>
                 <div className="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest text-gray-400 items-center">
                     <Link href="/#metodo" className="hover:text-btraffic-lime transition-colors">Nuestro Método</Link>
@@ -68,7 +68,7 @@ export default function PortfolioGrid() {
                             <span className="text-btraffic-lime italic">B-OS Ecosystems</span>
                         </h1>
                         <p className="text-gray-400 max-w-2xl text-lg font-light italic">
-                            Visualización en tiempo real de los proyectos integrados en la infraestructura BTraffic. Monitoreamos cada activo para asegurar su ROI.
+                            Visualización en tiempo real de los proyectos integrados en la infraestructura Btraffic. Monitoreamos cada activo para asegurar su ROI.
                         </p>
                     </header>
 
