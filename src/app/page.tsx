@@ -97,6 +97,7 @@ export default function Home() {
                     <a href="#activos" className="hover:text-btraffic-lime transition-colors">Activos</a>
                     <Link href="/portfolio" className="hover:text-btraffic-lime transition-colors">Casos de Éxito</Link>
                     <a href="#roi" className="hover:text-btraffic-lime transition-colors">ROI</a>
+                    <Link href="/academy" className="px-5 py-2 bg-btraffic-lime text-black rounded-full font-black text-[10px] uppercase tracking-widest hover:scale-105 transition-transform">Academy</Link>
                     <div className="w-px h-4 bg-white/10 mx-2" />
                     <a href="https://www.instagram.com/brandon_btraffic/" target="_blank" rel="noopener noreferrer" className="hover:text-btraffic-lime transition-colors"><Instagram size={14} /></a>
                     <a href="https://www.linkedin.com/company/btraffic" target="_blank" rel="noopener noreferrer" className="hover:text-btraffic-lime transition-colors"><Linkedin size={14} /></a>
