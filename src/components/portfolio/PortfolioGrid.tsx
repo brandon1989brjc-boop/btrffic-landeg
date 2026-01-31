@@ -31,31 +31,7 @@ const projects = [
 
 export default function PortfolioGrid() {
     return (
-        <div className="min-h-screen bg-[#050505] text-white">
-            {/* Navbar */}
-            <nav className="fixed top-0 w-full z-50 glass-panel py-4 px-8 flex justify-between items-center">
-                <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                    <div className="w-8 h-8 rounded bg-btraffic-lime flex items-center justify-center border border-white/10">
-                        <span className="font-black text-black text-sm">B</span>
-                    </div>
-                    <span className="font-black text-2xl tracking-tighter uppercase">Btraffic</span>
-                </Link>
-                <div className="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest text-gray-400 items-center">
-                    <Link href="/#metodo" className="hover:text-btraffic-lime transition-colors">Nuestro Método</Link>
-                    <Link href="/#activos" className="hover:text-btraffic-lime transition-colors">Activos</Link>
-                    <Link href="/portfolio" className="text-btraffic-lime">Casos de Éxito</Link>
-                    <Link href="/#roi" className="hover:text-btraffic-lime transition-colors">ROI</Link>
-                    <div className="w-px h-4 bg-white/10 mx-2" />
-                    <a href="https://www.instagram.com/brandon_btraffic/" target="_blank" rel="noopener noreferrer" className="hover:text-btraffic-lime transition-colors"><Instagram size={14} /></a>
-                    <a href="https://www.linkedin.com/company/btraffic" target="_blank" rel="noopener noreferrer" className="hover:text-btraffic-lime transition-colors"><Linkedin size={14} /></a>
-                    <a href="https://twitter.com/btraffic" target="_blank" rel="noopener noreferrer" className="hover:text-btraffic-lime transition-colors"><X size={14} /></a>
-                </div>
-                <Link href="/#sherlock">
-                    <button className="text-[10px] font-bold uppercase tracking-widest bg-white/5 border border-white/10 px-6 py-2 rounded-full hover:bg-white/10 transition-all">
-                        Iniciar Diagnóstico
-                    </button>
-                </Link>
-            </nav>
+        <div className="min-h-screen bg-[#050505] text-white selection:bg-btraffic-lime selection:text-black">
 
             <div className="pt-32 pb-20 px-6">
                 <div className="max-w-6xl mx-auto space-y-16">

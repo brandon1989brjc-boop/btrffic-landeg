@@ -22,78 +22,104 @@ export default function AcademyLayout({
     ];
 
     return (
-        <div className="min-h-screen bg-btraffic-dark text-white selection:bg-btraffic-lime selection:text-black">
-            {/* Academy Header */}
-            <header className="sticky top-0 z-50 bg-btraffic-dark/80 backdrop-blur-xl border-b border-white/5 px-4 md:px-8 py-3">
-                <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-                    {/* Brand */}
-                    <Link href="/" className="flex items-center gap-2 group">
-                        <div className="w-10 h-10 rounded-lg bg-btraffic-lime flex items-center justify-center border border-white/10 group-hover:scale-105 transition-transform">
-                            <span className="font-black text-black text-lg">B</span>
+        <div className="min-h-screen bg-btraffic-dark text-white selection:bg-btraffic-lime selection:text-black flex">
+            {/* Desktop Sidebar */}
+            <aside className="hidden lg:flex w-64 flex-col border-r border-white/5 bg-btraffic-dark sticky top-0 h-screen z-[110]">
+                <div className="p-6">
+                    <Link href="/" className="flex items-center gap-3 group">
+                        <div className="w-9 h-9 rounded-lg bg-btraffic-lime flex items-center justify-center border border-white/10 group-hover:scale-105 transition-transform">
+                            <span className="font-black text-black text-base">B</span>
                         </div>
-                        <div className="hidden sm:block">
-                            <h1 className="font-black text-xl tracking-tighter uppercase leading-none">Btraffic</h1>
-                            <p className="text-[10px] uppercase tracking-[0.2em] text-btraffic-lime font-bold">Academy</p>
+                        <div>
+                            <h1 className="font-black text-base tracking-tighter uppercase leading-none">Btraffic</h1>
+                            <p className="text-[7px] uppercase tracking-[0.3em] text-btraffic-lime font-black">Academy</p>
                         </div>
                     </Link>
-
-                    {/* Search Bar */}
-                    <div className="flex-1 max-w-xl relative hidden md:block">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-                        <input
-                            type="text"
-                            placeholder="Buscar cursos, lecciones o estrategias..."
-                            className="w-full bg-btraffic-gray/50 border border-white/5 rounded-full py-2.5 pl-12 pr-4 text-sm focus:outline-none focus:border-btraffic-lime/50 transition-colors"
-                        />
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex items-center gap-3">
-                        <button className="p-2 text-gray-400 hover:text-btraffic-lime relative">
-                            <Bell size={20} />
-                            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-btraffic-blue rounded-full"></span>
-                        </button>
-                        <div className="w-px h-6 bg-white/10 mx-1"></div>
-                        <div className="flex items-center gap-2 pl-2">
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-btraffic-lime to-btraffic-blue border border-white/20"></div>
-                            <span className="text-sm font-bold hidden lg:block">Estratega Junior</span>
-                        </div>
-                        <button className="md:hidden p-2">
-                            <Menu size={20} />
-                        </button>
-                    </div>
                 </div>
-            </header>
 
-            {/* Sub-navigation Tabs (Skool Style) */}
-            <nav className="bg-btraffic-dark border-b border-white/5 px-4 md:px-8">
-                <div className="max-w-7xl mx-auto flex items-center gap-1 overflow-x-auto no-scrollbar">
+                <nav className="flex-1 px-4 space-y-1">
                     {tabs.map((tab) => {
                         const isActive = (tab.href === '/academy' && (pathname === '/academy' || pathname.startsWith('/academy/course') || pathname.startsWith('/academy/lesson'))) ||
                             (tab.href !== '/academy' && pathname.startsWith(tab.href));
+
                         return (
                             <Link
                                 key={tab.href}
                                 href={tab.href}
-                                className={`relative flex items-center gap-2 px-6 py-4 text-sm font-bold uppercase tracking-widest transition-colors whitespace-nowrap ${isActive ? 'text-btraffic-lime' : 'text-gray-500 hover:text-gray-300'}`}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${isActive ? 'bg-btraffic-lime text-black shadow-[0_0_20px_rgba(162,255,0,0.1)]' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}
                             >
                                 <tab.icon size={16} />
                                 {tab.name}
-                                {isActive && (
-                                    <motion.div
-                                        layoutId="activeTab"
-                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-btraffic-lime"
-                                    />
-                                )}
                             </Link>
                         );
                     })}
-                </div>
-            </nav>
+                </nav>
 
-            <main className="max-w-7xl mx-auto p-4 md:p-8">
-                {children}
-            </main>
+                <div className="p-4 mt-auto">
+                    <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-4">
+                        <div className="flex justify-between items-center text-[8px] font-black uppercase tracking-widest text-gray-500">
+                            <span>Tu Progreso</span>
+                            <span className="text-btraffic-lime">12%</span>
+                        </div>
+                        <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+                            <div className="h-full bg-btraffic-lime w-[12%]" />
+                        </div>
+                        <Link href="/academy/settings" className="block text-[8px] font-bold text-center uppercase tracking-widest text-gray-400 hover:text-white transition-colors">
+                            Ver Certificaciones
+                        </Link>
+                    </div>
+                </div>
+            </aside>
+
+            {/* Main Content Area */}
+            <div className="flex-1 flex flex-col min-w-0">
+                {/* Mobile Header / Desktop Top Bar */}
+                <header className="sticky top-0 z-[100] bg-btraffic-dark/80 backdrop-blur-xl border-b border-white/5 px-6 py-4">
+                    <div className="max-w-7xl mx-auto flex items-center justify-between gap-8">
+                        {/* Mobile Toggle & Brand */}
+                        <div className="flex items-center gap-4 lg:hidden">
+                            <button className="p-2 -ml-2 text-gray-400">
+                                <Menu size={20} />
+                            </button>
+                            <Link href="/" className="w-8 h-8 rounded bg-btraffic-lime flex items-center justify-center">
+                                <span className="font-black text-black">B</span>
+                            </Link>
+                        </div>
+
+                        {/* Search Bar - Premium Style */}
+                        <div className="flex-1 max-w-xl relative hidden sm:block">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+                            <input
+                                type="text"
+                                placeholder="Buscar en el Ecosistema..."
+                                className="w-full bg-white/5 border border-white/5 rounded-full py-2 pl-12 pr-4 text-[10px] font-bold uppercase tracking-wider focus:outline-none focus:border-btraffic-lime/30 focus:bg-white/10 transition-all placeholder:text-gray-600"
+                            />
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex items-center gap-4">
+                            <button className="p-2 text-gray-400 hover:text-btraffic-lime transition-colors relative">
+                                <Bell size={18} />
+                                <span className="absolute top-2 right-2 w-1.5 h-1.5 bg-btraffic-blue rounded-full"></span>
+                            </button>
+                            <div className="w-px h-5 bg-white/10"></div>
+                            <div className="flex items-center gap-3 pl-1 group cursor-pointer">
+                                <div className="text-right hidden sm:block">
+                                    <p className="text-[10px] font-black uppercase tracking-tight leading-none mb-1 text-white group-hover:text-btraffic-lime transition-colors">Estratega Junior</p>
+                                    <p className="text-[8px] font-bold text-gray-500 uppercase tracking-widest leading-none">VIP</p>
+                                </div>
+                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-btraffic-lime to-btraffic-blue border border-white/20 shadow-lg group-hover:scale-105 transition-transform overflow-hidden">
+                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Btraffic" alt="Avatar" className="w-full h-full" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <main className="p-6 md:p-10 flex-1">
+                    {children}
+                </main>
+            </div>
         </div>
     );
 }

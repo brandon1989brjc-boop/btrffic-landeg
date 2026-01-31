@@ -2,14 +2,28 @@
 
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { ArrowRight, BarChart3, Cpu, ShieldCheck, Zap, Instagram, Linkedin, X } from 'lucide-react';
-import ROISection from '@/components/ROISection';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { X as CloseIcon, Layout, Database, Activity, Target, Share2, Server } from 'lucide-react';
-import { CentinelaGuardián } from '@/components/sections/CentinelaGuardian';
+import {
+    ArrowRight,
+    BarChart3,
+    Cpu,
+    ShieldCheck,
+    Zap,
+    Instagram,
+    Linkedin,
+    X as CloseIcon,
+    X,
+    Layout,
+    Database,
+    Activity,
+    Target,
+    Share2,
+    Server
+} from 'lucide-react';
+import ROISection from '@/components/ROISection';
 
-// Lazy loading del widget Sherlock (componente pesado con animaciones)
+// Lazy loading del widget Sherlock
 const SherlockWidget = dynamic(
     () => import('@/components/diagnostic/SherlockWidget').then(mod => mod.SherlockWidget),
     {
@@ -21,7 +35,7 @@ const SherlockWidget = dynamic(
                 </div>
             </div>
         ),
-        ssr: false // El widget es puramente interactivo, no necesita SSR
+        ssr: false
     }
 );
 
@@ -84,34 +98,6 @@ export default function Home() {
 
     return (
         <main className="relative min-h-screen bg-hero-mesh">
-            {/* Navbar */}
-            <nav className="fixed top-0 w-full z-50 glass-panel py-4 px-8 flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded bg-btraffic-lime flex items-center justify-center border border-white/10">
-                        <span className="font-black text-black text-sm">B</span>
-                    </div>
-                    <span className="font-black text-2xl tracking-tighter uppercase">Btraffic</span>
-                </div>
-                <div className="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest text-gray-400 items-center">
-                    <a href="#metodo" className="hover:text-btraffic-lime transition-colors">Nuestro Método</a>
-                    <a href="#activos" className="hover:text-btraffic-lime transition-colors">Activos</a>
-                    <Link href="/portfolio" className="hover:text-btraffic-lime transition-colors">Casos de Éxito</Link>
-                    <a href="#roi" className="hover:text-btraffic-lime transition-colors">ROI</a>
-                    <Link href="/academy" className="px-5 py-2 bg-btraffic-lime text-black rounded-full font-black text-[10px] uppercase tracking-widest hover:scale-105 transition-transform">Academy</Link>
-                    <div className="w-px h-4 bg-white/10 mx-2" />
-                    <a href="https://www.instagram.com/brandon_btraffic/" target="_blank" rel="noopener noreferrer" className="hover:text-btraffic-lime transition-colors"><Instagram size={14} /></a>
-                    <a href="https://www.linkedin.com/company/btraffic" target="_blank" rel="noopener noreferrer" className="hover:text-btraffic-lime transition-colors"><Linkedin size={14} /></a>
-                    <a href="https://twitter.com/btraffic" target="_blank" rel="noopener noreferrer" className="hover:text-btraffic-lime transition-colors"><X size={14} /></a>
-                </div>
-                <a
-                    href={process.env.NEXT_PUBLIC_PORTAL_URL || "https://app.btraffic.io"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[10px] font-bold uppercase tracking-widest bg-white/5 border border-white/10 px-6 py-2 rounded-full hover:bg-btraffic-lime hover:text-black hover:border-btraffic-lime transition-all"
-                >
-                    Acceso Clientes
-                </a>
-            </nav>
 
             {/* Hero Section */}
             <section className="pt-40 pb-20 px-8 max-w-7xl mx-auto flex flex-col items-center text-center">
@@ -220,7 +206,6 @@ export default function Home() {
                 <div className="opacity-30 text-[10px] font-bold tracking-[0.4em] uppercase text-center leading-relaxed">
                     © 2026 BTRAFFIC DIGITAL ASSET FACTORY. <br className="md:hidden" /> SIN DATO NO HAY RELATO.
                 </div>
-                <CentinelaGuardián />
             </footer>
         </main>
     );

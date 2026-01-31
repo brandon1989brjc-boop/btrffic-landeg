@@ -24,6 +24,8 @@ export const metadata: Metadata = {
     },
 };
 
+import NavbarWrapper from "@/components/layout/NavbarWrapper";
+
 export default function RootLayout({
     children,
 }: {
@@ -49,6 +51,7 @@ export default function RootLayout({
                 />
             </head>
             <body className="bg-btraffic-dark overflow-x-hidden antialiased">
+                <NavbarWrapper />
                 {children}
             </body>
         </html>
