@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Layout, Users, Calendar, Trophy, Search, Bell, Menu, Settings, X } from 'lucide-react';
+import { Layout, Users, Calendar, Trophy, Search, Bell, Menu, Settings, X, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
@@ -31,10 +31,8 @@ export default function AcademyLayout({
     }, []);
 
     const tabs = [
-        { name: 'Comunidad', href: '/academy/community', icon: Users },
-        { name: 'Aulas', href: '/academy', icon: Layout },
-        { name: 'Calendario', href: '/academy/calendar', icon: Calendar },
-        { name: 'Líderes', href: '/academy/leaderboard', icon: Trophy },
+        { name: 'Mando Central', href: '/academy/projects', icon: Layout },
+        { name: 'Aulas', href: '/academy', icon: BookOpen },
         { name: 'Ajustes', href: '/academy/settings', icon: Settings },
     ];
 
@@ -147,22 +145,10 @@ export default function AcademyLayout({
                             </Link>
                         </div>
 
-                        {/* Search Bar - Premium Style */}
-                        <div className="flex-1 max-w-xl relative hidden sm:block">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
-                            <input
-                                type="text"
-                                placeholder="Buscar en el Ecosistema..."
-                                className="w-full bg-white/5 border border-white/5 rounded-full py-2 pl-12 pr-4 text-[10px] font-bold uppercase tracking-wider focus:outline-none focus:border-btraffic-lime/30 focus:bg-white/10 transition-all placeholder:text-gray-600 appearance-none"
-                            />
-                        </div>
+                        <div className="flex-1 hidden sm:block"></div>
 
                         {/* Actions */}
                         <div className="flex items-center gap-4">
-                            <button className="p-2 text-gray-400 hover:text-btraffic-lime transition-colors relative">
-                                <Bell size={18} />
-                                <span className="absolute top-2 right-2 w-1.5 h-1.5 bg-btraffic-blue rounded-full"></span>
-                            </button>
                             <div className="w-px h-5 bg-white/10"></div>
                             <div className="flex items-center gap-3 pl-1 group cursor-pointer">
                                 <div className="text-right hidden sm:block">
