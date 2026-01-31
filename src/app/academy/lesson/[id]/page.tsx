@@ -21,16 +21,27 @@ export default function LessonPage() {
 
     const [isCompleted, setIsCompleted] = useState(false);
 
-    // List of sessions that actually have local videos
-    const sessionsWithVideo = ['1', '2', '3', '4', '5', '6', '8', '12', '15', '16', '17', '20'];
-    const getVideoPath = (sessionId: string) => {
-        if (sessionsWithVideo.includes(sessionId)) {
-            return `/videos/session-${sessionId.padStart(2, '0')}.mp4`;
-        }
-        return 'https://www.youtube.com/embed/dQw4w9WgXcQ'; // Rickroll as fallback or placeholder
+    // List of sessions that actually have local videos with correct paths
+    const videoMap: Record<string, string> = {
+        '1': '/assets/academy/videos/session_01.mp4',
+        '2': '/assets/academy/videos/session_02.mp4',
+        '3': '/assets/academy/videos/session_03.mp4',
+        '4': '/assets/academy/videos/session_04.mp4',
+        '5': '/assets/academy/videos/session_05.mp4',
+        '6': '/assets/academy/videos/session_06.mp4',
+        '8': '/assets/academy/videos/session_08.mp4',
+        '12': '/assets/academy/videos/session_12.mp4',
+        '15': '/assets/academy/videos/session_15.mp4',
+        '16': '/assets/academy/videos/session_16.mp4',
+        '17': '/assets/academy/videos/session_17.mp4',
+        '20': '/assets/academy/videos/session_20.mp4',
     };
 
-    const isLocalVideo = sessionsWithVideo.includes(id);
+    const getVideoPath = (sessionId: string) => {
+        return videoMap[sessionId] || 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+    };
+
+    const isLocalVideo = !!videoMap[id];
 
     useEffect(() => {
         const completed = JSON.parse(localStorage.getItem('btraffic_completed_lessons') || '[]');
@@ -92,6 +103,7 @@ export default function LessonPage() {
                         controls
                         className="w-full h-full object-cover"
                         poster="/images/video-poster.jpg"
+                        playsInline
                     >
                         <source src={getVideoPath(id)} type="video/mp4" />
                         Tu navegador no soporta el tag de video.
@@ -111,7 +123,7 @@ export default function LessonPage() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-btraffic-lime/10 pointer-events-none flex items-center justify-center"
+                            className="absolute inset-0 bg-btraffic-lime/10 pointer-events-none flex items-center justify-center p-4 text-center"
                         >
                             <div className="bg-btraffic-lime text-black px-6 py-3 rounded-full font-black uppercase text-xs shadow-2xl border-4 border-black/20">
                                 SESIÓN COMPLETADA
