@@ -1,207 +1,200 @@
-
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     ChevronLeft,
     ChevronRight,
     FileText,
-    MessageSquare,
     Download,
-    Eye,
     CheckCircle,
     Play
 } from 'lucide-react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 export default function LessonPage() {
     const params = useParams();
+    const router = useRouter();
     const id = params.id as string || '1';
+    const currentId = parseInt(id);
+
+    const [isCompleted, setIsCompleted] = useState(false);
 
     // List of sessions that actually have local videos
     const sessionsWithVideo = ['1', '2', '3', '4', '5', '6', '8', '12', '15', '16', '17', '20'];
-
-    const getLocalVideoPath = (sessionId: string) => {
+    const getVideoPath = (sessionId: string) => {
         if (sessionsWithVideo.includes(sessionId)) {
-            return `/assets/academy/videos/session_${sessionId.padStart(2, '0')}.mp4`;
+            return `/videos/session-${sessionId.padStart(2, '0')}.mp4`;
         }
-        return null; // Fallback if no video exists
+        return 'https://www.youtube.com/embed/dQw4w9WgXcQ'; // Rickroll as fallback or placeholder
     };
 
-    const sessionTitleMapping: Record<string, string> = {
-        '1': 'De la Web Pasiva al Activo de Datos',
-        '2': 'La Identidad del Estratega Pragmático',
-        '3': 'El Manifiesto Btraffic',
-        '4': 'Softuarización y Regla 80/20',
-        '5': 'Orquestación con n8n',
-        '6': 'Inteligencia con GraphRAG',
-        '7': 'Google AI Stack',
-        '8': 'Lógica vs. Agentes',
-        '9': "El Gancho Maestro - 'Regalo de Venta Diaria'",
-        '10': 'Auditoría en Vivo - Cualificación por Fugas',
-        '11': 'La Propuesta Irrechazable - ROI',
-        '12': 'El Cierre de Autoridad',
-        '13': 'El Modelo Partnership',
-        '14': 'Suscripción y Recurrencia',
-        '15': 'Onboarding del Ecosistema',
-        '16': 'Reporte de Transparencia',
-        '17': 'Eficiencia Operativa',
-        '18': 'Inteligencia Total - Las 4 Capas',
-        '19': 'Diversificación de Portfolio',
-        '20': 'El Futuro del Trabajo - Ecosistema 2026',
+    const isLocalVideo = sessionsWithVideo.includes(id);
+
+    useEffect(() => {
+        const completed = JSON.parse(localStorage.getItem('btraffic_completed_lessons') || '[]');
+        setIsCompleted(completed.includes(id));
+    }, [id]);
+
+    const toggleComplete = () => {
+        const completed = JSON.parse(localStorage.getItem('btraffic_completed_lessons') || '[]');
+        let newCompleted;
+        if (completed.includes(id)) {
+            newCompleted = completed.filter((i: string) => i !== id);
+        } else {
+            newCompleted = [...completed, id];
+        }
+        localStorage.setItem('btraffic_completed_lessons', JSON.stringify(newCompleted));
+        setIsCompleted(!isCompleted);
+
+        // Custom event for layout progress update
+        window.dispatchEvent(new Event('storage_update'));
     };
 
-    const lesson = {
-        id,
-        title: sessionTitleMapping[id] || `Sesión ${id} de Btraffic Academy`,
-        module: parseInt(id) <= 4 ? 'Módulo 1: ADN y Mentalidad' :
-            parseInt(id) <= 8 ? 'Módulo 2: Infraestructura y Datos' :
-                parseInt(id) <= 12 ? 'Módulo 3: Estrategia de Ventas' :
-                    parseInt(id) <= 16 ? 'Módulo 4: Operaciones y Delivery' :
-                        'Módulo 5: Escala y Futuro',
-        description: `Protocolo avanzado de Btraffic para la Sesión ${id}.`,
-        videoUrl: getLocalVideoPath(id),
-        resources: [
-            {
-                name: `SESION_${id.padStart(2, '0')}_BTRAFFIC.pdf`,
-                type: 'Estructura',
-                path: `/assets/academy/resources/SESION_${id.padStart(2, '0')}_BTRAFFIC.pdf`
-            },
-            {
-                name: `T-BTRAFFIC_P_S${id.padStart(2, '0')}.pdf`,
-                type: 'Profundización',
-                path: `/assets/academy/resources/T-BTRAFFIC_P_S${id.padStart(2, '0')}.pdf`
-            }
-        ]
-    };
+    const nextId = currentId < 20 ? currentId + 1 : null;
+    const prevId = currentId > 1 ? currentId - 1 : null;
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-20">
-            {/* Left Column: Video & Content (8 cols) */}
-            <div className="lg:col-span-8 space-y-6">
-                {/* Navigation */}
-                <div className="flex items-center justify-between gap-4">
-                    <Link href="/academy/course/estrategas-btraffic" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-btraffic-lime transition-colors">
-                        <ChevronLeft size={16} /> Ver Programa
-                    </Link>
-                    <div className="flex items-center gap-4">
-                        <button className="text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-white flex items-center gap-1 transition-colors">
-                            Anterior
-                        </button>
-                        <button className="text-[10px] font-black uppercase tracking-widest text-btraffic-lime hover:text-white flex items-center gap-1 transition-colors">
-                            Siguiente <ChevronRight size={16} />
-                        </button>
+        <div className="max-w-6xl mx-auto space-y-8 pb-12 font-['Outfit']">
+            {/* Header / Breadcrumbs */}
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+                <div className="space-y-1">
+                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-gray-500">
+                        <Link href="/academy" className="hover:text-btraffic-lime transition-colors">Aulas</Link>
+                        <span>/</span>
+                        <span className="text-white">Módulo de Estrategia</span>
                     </div>
+                    <h1 className="text-3xl font-black tracking-tighter uppercase italic">
+                        Sesión {id.padStart(2, '0')}: <span className="text-btraffic-lime">Arquitectura de Activos</span>
+                    </h1>
                 </div>
 
-                {/* Video Player */}
-                <div className="relative aspect-video rounded-3xl bg-black border border-white/5 overflow-hidden shadow-2xl shadow-black/50">
-                    {lesson.videoUrl ? (
-                        <video
-                            src={lesson.videoUrl}
-                            controls
-                            className="w-full h-full object-cover"
-                            poster="/og-image.png"
-                        />
-                    ) : (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 bg-gradient-to-br from-btraffic-dark via-transparent to-btraffic-lime/5">
-                            <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
-                                <Play size={32} className="text-gray-500 fill-gray-500 ml-1 opacity-20" />
-                            </div>
-                            <div className="text-center space-y-2">
-                                <p className="text-xs font-black uppercase tracking-widest text-btraffic-lime">
-                                    Sesión en producción
-                                </p>
-                                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tight">
-                                    El contenido estratégico estará disponible pronto
-                                </p>
-                            </div>
-                        </div>
-                    )}
-                </div>
-
-                {/* Lesson Info */}
-                <div className="space-y-4">
-                    <div className="flex items-start justify-between gap-4">
-                        <div>
-                            <span className="text-[10px] font-black uppercase tracking-widest text-btraffic-lime">{lesson.module}</span>
-                            <h1 className="text-2xl md:text-3xl font-black tracking-tighter uppercase mt-1">
-                                {lesson.id}. {lesson.title}
-                            </h1>
-                        </div>
-                        <button className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-btraffic-lime hover:text-black transition-all">
-                            <CheckCircle size={16} /> Completar
-                        </button>
-                    </div>
-
-                    <div className="p-6 bg-btraffic-gray/30 border border-white/5 rounded-3xl">
-                        <h4 className="text-xs font-black uppercase tracking-widest mb-3 flex items-center gap-2">
-                            <MessageSquare size={14} className="text-btraffic-blue" />
-                            Propósito de la sesión
-                        </h4>
-                        <p className="text-sm text-gray-400 leading-relaxed italic">
-                            "{lesson.description}"
-                        </p>
-                    </div>
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={toggleComplete}
+                        className={`flex items-center gap-2 px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 touch-manipulation ${isCompleted ? 'bg-btraffic-lime text-black' : 'bg-white/5 text-gray-400 hover:text-white border border-white/5'}`}
+                    >
+                        <CheckCircle size={16} fill={isCompleted ? 'currentColor' : 'none'} />
+                        {isCompleted ? 'Completado' : 'Marcar como completado'}
+                    </button>
+                    <button className="p-3 rounded-xl bg-white/5 text-gray-400 hover:text-white border border-white/5 transition-colors">
+                        <Download size={18} />
+                    </button>
                 </div>
             </div>
 
-            {/* Right Column: Resources & Community (4 cols) */}
-            <div className="lg:col-span-4 space-y-6">
-                {/* Resources */}
-                <div className="bg-btraffic-gray/30 border border-white/5 rounded-3xl p-6 space-y-6">
-                    <h3 className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
-                        <FileText size={16} className="text-btraffic-lime" />
-                        Material de Apoyo
-                    </h3>
-                    <div className="space-y-3">
-                        {lesson.resources.map((res, i) => (
-                            <div key={i} className="group flex items-center justify-between p-4 bg-black/40 rounded-2xl border border-white/5 hover:border-btraffic-lime/30 transition-all">
-                                <div className="space-y-1">
-                                    <p className="text-xs font-bold truncate max-w-[150px]">{res.name}</p>
-                                    <p className="text-[9px] font-black text-gray-500 uppercase tracking-widest">{res.type}</p>
-                                </div>
-                                <div className="flex gap-2">
-                                    <a
-                                        href={res.path}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="p-2 bg-white/5 rounded-lg text-gray-400 hover:text-btraffic-blue transition-colors"
-                                    >
-                                        <Eye size={16} />
-                                    </a>
-                                    <a
-                                        href={res.path}
-                                        download
-                                        className="p-2 bg-white/5 rounded-lg text-gray-400 hover:text-btraffic-lime transition-colors"
-                                    >
-                                        <Download size={16} />
-                                    </a>
-                                </div>
+            {/* Video Player Section */}
+            <div className="aspect-video bg-black rounded-[40px] overflow-hidden border border-white/5 shadow-2xl relative group">
+                {isLocalVideo ? (
+                    <video
+                        key={id}
+                        controls
+                        className="w-full h-full object-cover"
+                        poster="/images/video-poster.jpg"
+                    >
+                        <source src={getVideoPath(id)} type="video/mp4" />
+                        Tu navegador no soporta el tag de video.
+                    </video>
+                ) : (
+                    <iframe
+                        src={getVideoPath(id)}
+                        className="w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                    ></iframe>
+                )}
+
+                <AnimatePresence>
+                    {isCompleted && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="absolute inset-0 bg-btraffic-lime/10 pointer-events-none flex items-center justify-center"
+                        >
+                            <div className="bg-btraffic-lime text-black px-6 py-3 rounded-full font-black uppercase text-xs shadow-2xl border-4 border-black/20">
+                                SESIÓN COMPLETADA
                             </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+
+            {/* Navigation & Tabs */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2 space-y-6">
+                    <div className="flex gap-4 border-b border-white/5 pb-1">
+                        {['Resumen', 'Recursos', 'Comunidad'].map((tab) => (
+                            <button key={tab} className={`px-4 py-3 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all ${tab === 'Resumen' ? 'border-btraffic-lime text-white' : 'border-transparent text-gray-500 hover:text-gray-300'}`}>
+                                {tab}
+                            </button>
                         ))}
+                    </div>
+
+                    <div className="bg-white/5 rounded-[32px] p-8 border border-white/5 space-y-6">
+                        <h3 className="text-xl font-black uppercase tracking-tighter">¿Qué aprenderás en esta sesión?</h3>
+                        <p className="text-sm text-gray-400 leading-relaxed font-medium">
+                            En esta sesión profundizamos en la transición de "hacer webs" a "construir activos". Analizamos por qué el mercado está saturado de diseñadores pero hambriento de estrategas que sepan leer datos forenses.
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+                            {[
+                                'Análisis de fugas de tráfico',
+                                'Psicología del scroll premium',
+                                'Integración de n8n básica',
+                                'El cierre de 15 minutos'
+                            ].map((item) => (
+                                <div key={item} className="flex items-center gap-3 bg-black/40 p-4 rounded-2xl border border-white/5">
+                                    <div className="w-2 h-2 rounded-full bg-btraffic-lime shadow-[0_0_10px_rgba(162,255,0,0.5)]" />
+                                    <span className="text-[10px] font-black uppercase tracking-widest">{item}</span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
-                {/* Simple Community Placeholder */}
-                <div className="bg-btraffic-gray/30 border border-white/5 rounded-3xl p-6 space-y-6">
-                    <h3 className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
-                        <MessageSquare size={16} className="text-btraffic-blue" />
-                        Discusión de la clase
-                    </h3>
-                    <div className="space-y-4">
-                        <div className="flex gap-3">
-                            <div className="w-8 h-8 rounded-full bg-btraffic-lime/20 border border-btraffic-lime/20 flex items-center justify-center text-[10px] font-bold">JD</div>
-                            <div className="flex-1 bg-black/40 rounded-2xl p-3 border border-white/5">
-                                <p className="text-[10px] text-gray-400 leading-tight">Increíble cómo cambia el pitch cuando hablas de activos y no de webs.</p>
-                            </div>
+                <div className="space-y-6">
+                    <div className="bg-white/5 rounded-[32px] p-6 border border-white/5 space-y-4">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Navegación</p>
+                        <div className="grid grid-cols-2 gap-4">
+                            <button
+                                onClick={() => prevId && router.push(`/academy/lesson/${prevId}`)}
+                                disabled={!prevId}
+                                className={`flex flex-col gap-2 p-6 rounded-2xl transition-all border touch-manipulation active:scale-95 ${prevId ? 'bg-white/5 border-white/10 hover:bg-white/10 text-white shadow-lg' : 'bg-transparent border-white/5 text-gray-700 cursor-not-allowed'}`}
+                            >
+                                <ChevronLeft size={20} />
+                                <span className="text-[9px] font-black uppercase tracking-widest text-left">Anterior</span>
+                            </button>
+                            <button
+                                onClick={() => nextId && router.push(`/academy/lesson/${nextId}`)}
+                                disabled={!nextId}
+                                className={`flex flex-col items-end gap-2 p-6 rounded-2xl transition-all border touch-manipulation active:scale-95 ${nextId ? 'bg-btraffic-lime border-transparent hover:scale-105 shadow-xl shadow-btraffic-lime/20 text-black' : 'bg-transparent border-white/5 text-gray-700 cursor-not-allowed'}`}
+                            >
+                                <ChevronRight size={20} />
+                                <span className="text-[9px] font-black uppercase tracking-widest text-right">Siguiente</span>
+                            </button>
                         </div>
-                        <input
-                            type="text"
-                            placeholder="Escribe un comentario..."
-                            className="w-full bg-white/5 border border-white/5 rounded-xl py-3 px-4 text-[10px] focus:outline-none focus:border-btraffic-lime/50"
-                        />
+                    </div>
+
+                    <div className="bg-white/5 rounded-[32px] p-6 border border-white/5 space-y-4">
+                        <div className="flex items-center justify-between">
+                            <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Recursos de Sesión</p>
+                            <span className="text-[10px] font-black text-btraffic-blue">4 archivos</span>
+                        </div>
+                        <div className="space-y-2">
+                            {[
+                                { name: 'PDF: Framework de Estrategia', size: '12MB' },
+                                { name: 'XLSX: Calculadora ROI v2', size: '2MB' },
+                            ].map((file) => (
+                                <div key={file.name} className="flex items-center justify-between p-4 rounded-2xl bg-black/40 border border-white/5 group hover:border-btraffic-blue/30 transition-all cursor-pointer">
+                                    <div className="flex items-center gap-3">
+                                        <FileText size={16} className="text-btraffic-blue" />
+                                        <div className="text-[9px] font-black uppercase tracking-tight">{file.name}</div>
+                                    </div>
+                                    <div className="text-[8px] font-bold text-gray-600">{file.size}</div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
