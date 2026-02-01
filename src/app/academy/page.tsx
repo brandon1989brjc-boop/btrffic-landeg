@@ -173,7 +173,7 @@ export default function ClassroomPage() {
 
                                 {course.type === 'FREE' ? (
                                     <Link
-                                        href={`/academy/lesson/1`}
+                                        href={`/academy/course/${course.id}`}
                                         className="mt-4 w-full py-4 bg-white/5 border border-white/10 rounded-2xl text-center text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all active:scale-[0.98] shadow-lg"
                                     >
                                         Entrar al Aula

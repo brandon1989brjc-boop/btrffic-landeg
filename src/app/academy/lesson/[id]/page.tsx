@@ -44,9 +44,15 @@ export default function LessonPage() {
     const isLocalVideo = !!videoMap[id];
 
     useEffect(() => {
+        // Auth Check
+        const unlocked = localStorage.getItem('btraffic_academy_unlocked');
+        if (unlocked !== 'true') {
+            router.push('/academy/course/estrategas-btraffic?lock_redirect=true');
+        }
+
         const completed = JSON.parse(localStorage.getItem('btraffic_completed_lessons') || '[]');
         setIsCompleted(completed.includes(id));
-    }, [id]);
+    }, [id, router]);
 
     const toggleComplete = () => {
         const completed = JSON.parse(localStorage.getItem('btraffic_completed_lessons') || '[]');
@@ -72,7 +78,7 @@ export default function LessonPage() {
             <div className="flex items-center justify-between gap-4 flex-wrap">
                 <div className="space-y-1">
                     <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-gray-500">
-                        <Link href="/academy" className="hover:text-btraffic-lime transition-colors">Aulas</Link>
+                        <Link href="/academy/course/estrategas-btraffic" className="hover:text-btraffic-lime transition-colors">Aulas</Link>
                         <span>/</span>
                         <span className="text-white">Módulo de Estrategia</span>
                     </div>

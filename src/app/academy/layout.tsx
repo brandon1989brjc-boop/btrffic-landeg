@@ -31,7 +31,6 @@ export default function AcademyLayout({
     }, []);
 
     const tabs = [
-        { name: 'Mando Central', href: '/academy/projects', icon: Layout },
         { name: 'Aulas', href: '/academy', icon: BookOpen },
         { name: 'Ajustes', href: '/academy/settings', icon: Settings },
     ];
