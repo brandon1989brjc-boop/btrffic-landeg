@@ -1,18 +1,24 @@
 'use client';
 
+import { COURSES } from './data/courses';
+
 import { motion } from 'framer-motion';
 import { Play, Lock, ChevronRight, BarChart, BookOpen, Clock } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import PremiumUpgradeModal from '@/components/academy/PremiumUpgradeModal';
 
 export default function ClassroomPage() {
     const [mainProgress, setMainProgress] = useState(0);
+    const [isPremiumUnlocked, setIsPremiumUnlocked] = useState(false);
 
     const updateProgress = () => {
         const completed = JSON.parse(localStorage.getItem('btraffic_completed_lessons') || '[]');
         // Based on 20 total lessons for the main course
         const calculated = Math.round((completed.length / 20) * 100);
         setMainProgress(calculated > 100 ? 100 : calculated);
+
+        setIsPremiumUnlocked(localStorage.getItem('btraffic_premium_unlocked') === 'true');
     };
 
     useEffect(() => {
@@ -21,41 +27,12 @@ export default function ClassroomPage() {
         return () => window.removeEventListener('storage_update', updateProgress);
     }, []);
 
-    const courses = [
-        {
-            id: 'estrategas-btraffic',
-            title: 'Formación de Estrategas Btraffic',
-            description: 'Domina el ADN de Btraffic y conviértete en un arquitecto de sistemas operativos para captar clientes de alto valor.',
-            image: '/academy/covers/estrategas.jpg',
-            progress: mainProgress,
-            lessonCount: 20,
-            type: 'FREE',
-            color: 'btraffic-lime',
-            tag: '¡EMPIEZA AQUÍ!'
-        },
-        {
-            id: 'automatizacion-avanzada',
-            title: 'Arquitectura y Automatización Senior',
-            description: 'Flujos complejos en n8n, entrenamiento de LLMs forenses y orquestación masiva de agentes.',
-            image: '/academy/covers/advanced.jpg',
-            progress: 0,
-            lessonCount: 15,
-            type: 'PREMIUM',
-            color: 'btraffic-purple',
-            tag: 'Unlock with Premium'
-        },
-        {
-            id: 'ventas-forenses',
-            title: 'Psicología y Ventas Basadas en Datos',
-            description: 'Cierre de contratos 5-figuras utilizando auditorías en vivo y ganchos de autoridad forense.',
-            image: '/academy/covers/sales.jpg',
-            progress: 0,
-            lessonCount: 10,
-            type: 'PREMIUM',
-            color: 'btraffic-blue',
-            tag: 'Unlock with Premium'
-        }
-    ];
+    const courses = COURSES.map(course => ({
+        ...course,
+        progress: course.id === 'estrategas-btraffic' ? mainProgress : 0
+    }));
+
+    const [isPremiumModalOpen, setIsPremiumModalOpen] = useState(false);
 
     return (
         <div className="space-y-10 font-['Outfit']">
@@ -105,14 +82,17 @@ export default function ClassroomPage() {
                         >
                             {/* Course Image / Cover */}
                             <div className="relative aspect-[16/10] overflow-hidden border-b border-white/5">
-                                {course.type === 'PREMIUM' && (
+                                {(course.isPremium && !isPremiumUnlocked) && (
                                     <div className="absolute inset-0 z-20 bg-black/70 backdrop-blur-[4px] flex flex-col items-center justify-center gap-5">
                                         <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shadow-2xl">
                                             <Lock size={24} className="text-btraffic-purple" />
                                         </div>
-                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] bg-btraffic-purple text-white px-5 py-2 rounded-full shadow-xl shadow-btraffic-purple/30">
+                                        <button
+                                            onClick={() => setIsPremiumModalOpen(true)}
+                                            className="text-[10px] font-black uppercase tracking-[0.2em] bg-btraffic-purple text-white px-5 py-2 rounded-full shadow-xl shadow-btraffic-purple/30 hover:scale-105 transition-transform active:scale-95"
+                                        >
                                             Desbloquear con Premium
-                                        </span>
+                                        </button>
                                     </div>
                                 )}
 
@@ -121,12 +101,12 @@ export default function ClassroomPage() {
                                 {/* Placeholder for visuals */}
                                 <div className={`w-full h-full bg-btraffic-gray flex items-center justify-center`}>
                                     <div className={`w-full h-full absolute transition-transform duration-1000 group-hover:scale-110 opacity-60 bg-[url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2832&auto=format&fit=crop')] bg-cover bg-center`} />
-                                    <h4 className="relative z-10 text-5xl font-black tracking-tighter text-white/10 uppercase italic">
-                                        ESTRATEGAS
+                                    <h4 className="relative z-10 text-5xl font-black tracking-tighter text-white/10 uppercase italic px-4 text-center">
+                                        {course.id === 'estrategas-btraffic' ? 'ESTRATEGAS' : (course.isPremium ? 'PREMIUM' : 'B-TRAFFIC')}
                                     </h4>
                                 </div>
 
-                                {course.type === 'FREE' && (
+                                {(!course.isPremium || isPremiumUnlocked) && (
                                     <button className="absolute bottom-6 right-6 z-30 w-14 h-14 rounded-full bg-btraffic-lime flex items-center justify-center shadow-2xl shadow-btraffic-lime/30 group-hover:scale-110 active:scale-95 transition-all">
                                         <Play size={24} className="text-black fill-black ml-1" />
                                     </button>
@@ -159,7 +139,7 @@ export default function ClassroomPage() {
                                 <div className="space-y-3">
                                     <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
                                         <span className="text-gray-500">Progreso</span>
-                                        <span className="text-btraffic-lime">{course.progress}%</span>
+                                        <span className={`text-${course.color}`}>{course.progress}%</span>
                                     </div>
                                     <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
                                         <motion.div
@@ -171,7 +151,7 @@ export default function ClassroomPage() {
                                     </div>
                                 </div>
 
-                                {course.type === 'FREE' ? (
+                                {(!course.isPremium || isPremiumUnlocked) ? (
                                     <Link
                                         href={`/academy/course/${course.id}`}
                                         className="mt-4 w-full py-4 bg-white/5 border border-white/10 rounded-2xl text-center text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all active:scale-[0.98] shadow-lg"
@@ -179,8 +159,11 @@ export default function ClassroomPage() {
                                         Entrar al Aula
                                     </Link>
                                 ) : (
-                                    <button className="mt-4 w-full py-4 bg-white/5 border border-white/10 rounded-2xl text-center text-[10px] font-black uppercase tracking-widest opacity-30 cursor-not-allowed">
-                                        Contenido Protegido
+                                    <button
+                                        onClick={() => setIsPremiumModalOpen(true)}
+                                        className="mt-4 w-full py-4 bg-btraffic-purple/20 border border-btraffic-purple/30 rounded-2xl text-center text-[10px] font-black uppercase tracking-widest text-btraffic-purple hover:bg-btraffic-purple/30 transition-all active:scale-[0.98] shadow-lg"
+                                    >
+                                        Desbloquear • 100€
                                     </button>
                                 )}
                             </div>
@@ -188,6 +171,11 @@ export default function ClassroomPage() {
                     ))}
                 </div>
             </section>
+
+            <PremiumUpgradeModal
+                isOpen={isPremiumModalOpen}
+                onClose={() => setIsPremiumModalOpen(false)}
+            />
         </div>
     );
 }

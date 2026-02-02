@@ -8,10 +8,11 @@ import { CentinelaGuardián } from '../sections/CentinelaGuardian';
 export default function NavbarWrapper() {
     const pathname = usePathname();
 
-    // Deberíamos ocultar el Navbar principal en el Academy ya que tiene su propio layout/sidebar
+    // Ocultamos el Navbar principal en el Aula y el Portal de Clientes
     const isAcademy = pathname?.startsWith('/academy');
+    const isPortal = pathname?.startsWith('/portal');
 
-    if (isAcademy) return null;
+    if (isAcademy || isPortal) return null;
 
     return (
         <>

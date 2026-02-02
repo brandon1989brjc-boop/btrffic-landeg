@@ -66,7 +66,7 @@ const Navbar = () => {
                             href="/academy"
                             className={`px-6 py-2.5 rounded-full font-black text-[10px] uppercase tracking-widest transition-all duration-300 flex items-center gap-2 ${isAcademy ? 'bg-white/10 border border-white/20 text-white' : 'bg-btraffic-lime text-black hover:scale-105 glow-lime shadow-lg shadow-btraffic-lime/20'}`}
                         >
-                            Academy <ArrowRight size={12} />
+                            Aula <ArrowRight size={12} />
                         </Link>
 
                         <div className="w-px h-4 bg-white/10 mx-2" />
@@ -77,8 +77,7 @@ const Navbar = () => {
                         </div>
 
                         <Link
-                            href="https://app.btraffic.io"
-                            target="_blank"
+                            href="/portal"
                             className="bg-white/5 border border-white/10 px-6 py-2.5 rounded-full hover:bg-white/10 transition-all font-black"
                         >
                             Acceso
@@ -121,14 +120,13 @@ const Navbar = () => {
                                 onClick={() => setIsOpen(false)}
                                 className="text-4xl font-black uppercase tracking-tighter text-btraffic-lime flex items-center gap-4"
                             >
-                                Academy <ArrowRight size={32} />
+                                Aula <ArrowRight size={32} />
                             </Link>
                         </div>
 
                         <div className="mt-auto pt-10 border-t border-white/5 flex flex-col gap-6">
                             <Link
-                                href="https://app.btraffic.io"
-                                target="_blank"
+                                href="/portal"
                                 onClick={() => setIsOpen(false)}
                                 className="w-full py-5 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center font-black uppercase tracking-widest"
                             >

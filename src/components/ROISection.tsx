@@ -181,7 +181,7 @@ export default function ROISection() {
 
                     <div className="space-y-4">
                         <div className="w-12 h-12 rounded-2xl bg-btraffic-lime/20 border border-btraffic-lime/30 flex items-center justify-center text-2xl font-black">3</div>
-                        <h4 className="text-xl font-bold text-white">Success Fee (Opcional)</h4>
+                        <h4 className="text-xl font-bold text-white">Comisión por Resultados (Opcional)</h4>
                         <p className="text-gray-500 text-sm leading-relaxed">
                             En algunos casos, trabajamos con un % variable sobre resultados (5-10% de ventas generadas). Solo ganamos si usted gana.
                         </p>

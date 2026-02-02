@@ -44,7 +44,7 @@ export default function AcademyLayout({
                     </div>
                     <div>
                         <h1 className="font-black text-base tracking-tighter uppercase leading-none">Btraffic</h1>
-                        <p className="text-[7px] uppercase tracking-[0.3em] text-btraffic-lime font-black">Academy</p>
+                        <p className="text-[7px] uppercase tracking-[0.3em] text-btraffic-lime font-black">AULA</p>
                     </div>
                 </Link>
             </div>

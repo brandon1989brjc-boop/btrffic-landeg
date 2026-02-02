@@ -31,7 +31,7 @@ const SherlockWidget = dynamic(
             <div className="w-full max-w-xl mx-auto glass-panel rounded-[40px] p-10 border-btraffic-lime/20 h-96 flex items-center justify-center">
                 <div className="text-center space-y-4">
                     <div className="w-16 h-16 border-4 border-btraffic-lime/20 border-t-btraffic-lime rounded-full animate-spin mx-auto"></div>
-                    <p className="text-xs font-bold uppercase tracking-widest text-gray-500">Cargando Sherlock...</p>
+                    <p className="text-xs font-bold uppercase tracking-widest text-gray-500">Iniciando Diagnóstico...</p>
                 </div>
             </div>
         ),
@@ -181,7 +181,7 @@ export default function Home() {
             <section id="sherlock" className="py-40 px-8 max-w-7xl mx-auto flex flex-col items-center">
                 <div className="text-center mb-16">
                     <h2 className="text-5xl md:text-7xl font-black mb-6 uppercase tracking-tight">¿Es su negocio un <br /><span className="text-btraffic-lime italic">Candidato Btraffic</span>?</h2>
-                    <p className="text-gray-500 max-w-xl mx-auto font-medium">Nuestro filtro agéntico Sherlock analiza su estructura actual para determinar si podemos generar un ROI masivo de inmediato.</p>
+                    <p className="text-gray-500 max-w-xl mx-auto font-medium">Nuestro sistema de Diagnóstico Forense analiza su estructura actual para determinar si podemos generar un ROI masivo de inmediato.</p>
                 </div>
                 <SherlockWidget />
             </section>
@@ -204,7 +204,7 @@ export default function Home() {
                 </div>
 
                 <div className="opacity-30 text-[10px] font-bold tracking-[0.4em] uppercase text-center leading-relaxed">
-                    © 2026 BTRAFFIC DIGITAL ASSET FACTORY. <br className="md:hidden" /> SIN DATO NO HAY RELATO.
+                    © 2026 FÁBRICA DE ACTIVOS DIGITALES BTRAFFIC. <br className="md:hidden" /> SIN DATO NO HAY RELATO.
                 </div>
             </footer>
         </main>

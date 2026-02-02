@@ -35,7 +35,7 @@ export function SherlockWidget() {
         setStatus('analyzing');
 
         try {
-            // FASE 1: Análisis técnico con Sherlock (auditoría web)
+            // FASE 1: Análisis Técnico Forense (auditoría web)
             const sherlockResponse = await fetch('/api/sherlock/analyze', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -103,7 +103,7 @@ export function SherlockWidget() {
         const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "34661139454";
         const message = isQualified
             ? `Hola Btraffic, soy ${data.name} (${data.role}). He completado el diagnóstico forense de ${data.web}. Soy CANDIDATO POSITIVO. Mi número de tranquilidad es ${data.tranquilityNumber}. Quiero agendar la sesión estratégica.`
-            : `Hola Btraffic, soy ${data.name}. He analizado ${data.web} con Sherlock. Entiendo que mi negocio está en fase de cimentación y quiero recibir el Argumento Estratégico a medida.`;
+            : `Hola Btraffic, soy ${data.name}. He analizado ${data.web} con el Diagnóstico Forense. Entiendo que mi negocio está en fase de cimentación y quiero recibir el Argumento Estratégico a medida.`;
 
         window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
     };
@@ -353,7 +353,7 @@ export function SherlockWidget() {
                                 <p className="text-gray-400 font-medium leading-relaxed">
                                     {intelligenceResult?.personalizedMessage || (
                                         <>
-                                            {data.name}, Sherlock ha detectado que <span className="text-white font-bold">{data.web}</span> necesita una base de procesos más robusta antes de escalar con un B-OS completo. <br /><br />
+                                            {data.name}, el sistema ha detectado que <span className="text-white font-bold">{data.web}</span> necesita una base de procesos más robusta antes de escalar con un B-OS completo. <br /><br />
                                             He preparado un <span className="text-btraffic-blue font-bold">Argumento Estratégico a medida</span> para que {data.web} logre su primer hito de facturación y califique pronto.
                                         </>
                                     )}
