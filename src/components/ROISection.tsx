@@ -197,6 +197,7 @@ export default function ROISection() {
                 <button
                     onClick={() => setIsCalculatorOpen(true)}
                     className="btn-premium px-12 py-5 text-lg"
+                    data-track="roi-calculator-open"
                 >
                     Calcular Mi ROI Personalizado
                 </button>

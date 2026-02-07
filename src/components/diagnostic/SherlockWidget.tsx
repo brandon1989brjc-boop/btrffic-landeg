@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, AlertCircle, Send, User, Building2, TrendingUp, MessageCircle, Briefcase, Wallet, Timer, AtSign } from 'lucide-react';
+import { CheckCircle2, AlertCircle, User, TrendingUp, MessageCircle, Briefcase, Wallet, Timer, AtSign, Building2 } from 'lucide-react';
 
 export function SherlockWidget() {
     const [step, setStep] = useState(0);
@@ -17,37 +17,29 @@ export function SherlockWidget() {
         revenue: ''
     });
     const [status, setStatus] = useState<'idle' | 'analyzing' | 'result'>('idle');
+    const [intelligenceResult, setIntelligenceResult] = useState<any>(null);
 
     // Validación de URLs para evitar gastos de API innecesarios
     const isValidUrl = (url: string): boolean => {
         if (!url || url.length < 4) return false;
-        // Acepta URLs completas o dominios simples, o redes sociales conocidas
         const urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
         const socialPattern = /(instagram|linkedin|twitter|x\.com|facebook|tiktok)/i;
         return urlPattern.test(url) || socialPattern.test(url);
     };
 
-    const nextStep = () => setStep(s => s + 1);
-
-    const [intelligenceResult, setIntelligenceResult] = useState<any>(null);
+    const nextStep = (stepNumber: number) => {
+        setStep(stepNumber);
+        // Track step change
+        if (typeof window !== 'undefined') {
+            console.log(`🔍 Btraffic Diagnostic - Step ${stepNumber}`);
+        }
+    };
 
     const analyze = async () => {
         setStatus('analyzing');
 
         try {
-            // FASE 1: Análisis Técnico Forense (auditoría web)
-            const sherlockResponse = await fetch('/api/sherlock/analyze', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    url: data.web,
-                    ...data,
-                    timestamp: new Date().toISOString(),
-                    source: 'btraffic-agency-v2-widget'
-                })
-            });
-
-            // FASE 2: Cualificación inteligente con Groq (análisis de perfil)
+            // FASE 1: Cualificación inteligente con Groq
             const intelligenceResponse = await fetch('/api/intelligence/qualify', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -61,49 +53,77 @@ export function SherlockWidget() {
                 })
             });
 
+            let qualification = { score: 0, isQualified: false, recommendedAction: 'evaluando' };
             if (intelligenceResponse.ok) {
                 const intelligenceData = await intelligenceResponse.json();
-                const qual = intelligenceData.qualification;
-                setIntelligenceResult(qual);
+                qualification = intelligenceData.qualification;
+                setIntelligenceResult(qualification);
+            }
 
-                // FASE 3: Orquestación y Persistencia (Mover esto aquí asegura que tengamos los datos de IA)
-                await fetch('/api/sherlock/analyze', {
+            // FASE 2: Orquestación completa
+            await fetch('/api/sherlock/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    url: data.web,
+                    email: data.email,
+                    timestamp: new Date().toISOString(),
+                    source: 'btraffic-agency-v2-widget',
+                    leadMetadata: {
+                        name: data.name,
+                        role: data.role,
+                        pain: data.pain,
+                        revenue: data.revenue === 'yes' ? '+$10k USD/mes' : 'Menos de $10k',
+                        score: qualification.score,
+                        isQualified: qualification.isQualified,
+                        tranquilityRequested: data.tranquilityNumber,
+                        assetStatus: data.assetStatus
+                    }
+                })
+            });
+
+            // 🚀 INTEGRACIÓN COMMAND CENTER: Crear proyecto automáticamente en Discovery
+            try {
+                fetch('http://localhost:3000/api/projects', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        url: data.web,
-                        email: data.email,
-                        leadMetadata: {
-                            name: data.name,
+                        name: `Lead: ${data.web}`,
+                        client_name: data.name,
+                        status: 'discovery',
+                        industry: 'General',
+                        progress_percent: 15,
+                        metadata: {
+                            email: data.email,
+                            score: qualification.score,
                             role: data.role,
-                            pain: data.pain,
-                            revenue: data.revenue === 'yes' ? '+$10k USD/mes' : 'Menos de $10k',
-                            score: qual.score,
-                            isQualified: qual.isQualified
+                            revenue: data.revenue,
+                            pains: qualification.recommendedAction || ['Auditoría Sherlock pendiente'],
+                            source: 'web_sherlock_widget'
                         }
-                    })
-                });
-            }
+                    }),
+                    mode: 'no-cors'
+                }).catch(() => { }); // Fire and forget
+                console.log('🏛️ COMMAND_CENTER: Discovery project registered sync.');
+            } catch (err) { }
 
-            // Simulación de procesamiento de IA tras envío exitoso para UX
-            setTimeout(() => setStatus('result'), 3000);
+            setTimeout(() => setStatus('result'), 2500);
         } catch (error) {
-            console.error('Analysis Error:', error);
-            // Fallback para no romper la UX
-            setTimeout(() => setStatus('result'), 3000);
+            console.error('CRITICAL_DIAGNOSTIC_ERROR:', error);
+            setTimeout(() => setStatus('result'), 2000);
         }
     };
 
-    // Lógica de Cualificación Basada en Guion Maestro
+    // Lógica de Cualificación Fallback
     const isHighValueRole = ['CEO/Founder', 'Director', 'Gerente'].includes(data.role);
-    const hasDigitalPain = data.assetStatus === 'gasto';
-    const isQualified = isHighValueRole && data.revenue === 'yes';
+    const isQualifiedByRules = isHighValueRole && data.revenue === 'yes';
+    const isQualified = intelligenceResult ? intelligenceResult.isQualified : isQualifiedByRules;
 
     const handleWhatsAppRedirect = () => {
         const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "34661139454";
         const message = isQualified
-            ? `Hola Btraffic, soy ${data.name} (${data.role}). He completado el diagnóstico forense de ${data.web}. Soy CANDIDATO POSITIVO. Mi número de tranquilidad es ${data.tranquilityNumber}. Quiero agendar la sesión estratégica.`
-            : `Hola Btraffic, soy ${data.name}. He analizado ${data.web} con el Diagnóstico Forense. Entiendo que mi negocio está en fase de cimentación y quiero recibir el Argumento Estratégico a medida.`;
+            ? `Hola Btraffic, soy ${data.name} (${data.role}). He completado el diagnóstico forense de ${data.web}. Score: ${intelligenceResult?.score || 'N/A'}. Quiero agendar sesión.`
+            : `Hola Btraffic, soy ${data.name}. He analizado ${data.web} con el Diagnóstico Forense. Quiero recibir el Argumento Estratégico a medida.`;
 
         window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
     };
@@ -126,7 +146,7 @@ export function SherlockWidget() {
                         {step === 0 && (
                             <div className="space-y-6">
                                 <div className="space-y-1">
-                                    <label className="text-[9px] md:text-[10px] font-black text-btraffic-lime uppercase tracking-[0.3em]">Fase 1: Identificación de Autoridad</label>
+                                    <label className="text-[10px] font-black text-btraffic-lime uppercase tracking-[0.3em]">Fase 1: Identificación</label>
                                     <h3 className="text-xl md:text-2xl font-black uppercase tracking-tighter">Radiografía de Operación</h3>
                                 </div>
 
@@ -146,68 +166,48 @@ export function SherlockWidget() {
                                             type="email"
                                             placeholder="Su Email de Empresa"
                                             className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 pl-12 focus:border-btraffic-lime outline-none transition-all font-bold text-lg"
-                                            value={data.email || ''} onChange={e => setData({ ...data, email: e.target.value })}
+                                            value={data.email} onChange={e => setData({ ...data, email: e.target.value })}
                                         />
                                     </div>
 
-                                    {data.name.length > 2 && (
-                                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-4 pt-2">
-                                            <div className="grid grid-cols-2 gap-3">
-                                                {['CEO/Founder', 'Director', 'Gerente', 'Estratega'].map(r => (
-                                                    <button
-                                                        key={r}
-                                                        onClick={() => setData({ ...data, role: r })}
-                                                        className={`p-3 rounded-xl border text-xs font-bold uppercase tracking-widest transition-all ${data.role === r ? 'border-btraffic-lime bg-btraffic-lime/10 text-btraffic-lime' : 'border-white/5 bg-white/5 hover:border-white/20 text-gray-500'}`}
-                                                    >
-                                                        {r}
-                                                    </button>
-                                                ))}
-                                            </div>
-
-                                            <div className="relative group">
-                                                <div className="absolute left-4 top-4 text-gray-500 font-black text-[10px] tracking-tighter uppercase group-focus-within:text-btraffic-lime transition-colors">HTTPS://</div>
-                                                <input
-                                                    placeholder="www.empresa.com o Red Social"
-                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 pl-20 focus:border-btraffic-lime outline-none transition-all font-bold text-lg"
-                                                    value={data.web} onChange={e => setData({ ...data, web: e.target.value })}
-                                                />
-                                            </div>
-                                        </motion.div>
-                                    )}
+                                    <div className="relative group">
+                                        <Building2 className="absolute left-4 top-4 text-gray-500 group-focus-within:text-btraffic-lime transition-colors" size={18} />
+                                        <input
+                                            placeholder="Sitio Web (ej: minegocio.com)"
+                                            className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 pl-12 focus:border-btraffic-lime outline-none transition-all font-bold text-lg"
+                                            value={data.web} onChange={e => setData({ ...data, web: e.target.value })}
+                                        />
+                                    </div>
                                 </div>
 
                                 <button
-                                    onClick={nextStep}
-                                    disabled={!data.role || !isValidUrl(data.web)}
-                                    className="w-full btn-premium py-5 disabled:opacity-20 disabled:grayscale transition-all"
+                                    disabled={!data.name || !data.email || !isValidUrl(data.web)}
+                                    onClick={() => nextStep(1)}
+                                    className="btn-premium w-full py-5 text-lg disabled:opacity-30 disabled:grayscale"
+                                    data-track="diagnostic-go-step-1"
                                 >
-                                    Iniciar Diagnóstico Forense
+                                    Siguiente Paso
                                 </button>
                             </div>
                         )}
 
                         {step === 1 && (
                             <div className="space-y-6">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-btraffic-blue uppercase tracking-[0.3em]">Fase 2: La Brecha del Autoempleo</label>
-                                    <h3 className="text-2xl font-black uppercase tracking-tighter">¿Dónde está el cuello de botella?</h3>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black text-btraffic-blue uppercase tracking-[0.3em]">Fase 2: Estratificación</label>
+                                    <h3 className="text-xl md:text-2xl font-black uppercase tracking-tighter">Perfil de Autoridad</h3>
                                 </div>
-                                <p className="text-gray-400 text-sm italic">"Si hoy dejas de operar una semana, ¿tu negocio se detiene porque los procesos están solo en tu cabeza?"</p>
-                                <div className="grid grid-cols-1 gap-3">
-                                    {[
-                                        { id: 'marketing', label: 'Cierre de Ventas Manual' },
-                                        { id: 'ops', label: 'Operación Dependiente de Mí' },
-                                        { id: 'data', label: 'Desconocimiento de Márgenes' }
-                                    ].map(p => (
+
+                                <div className="grid grid-cols-1 gap-4">
+                                    {['CEO/Founder', 'Director', 'Gerente', 'Freelancer/Inversor'].map((role) => (
                                         <button
-                                            key={p.id}
-                                            onClick={() => { setData({ ...data, pain: p.label }); nextStep(); }}
-                                            className="text-left p-5 rounded-2xl border border-white/5 bg-white/5 hover:border-btraffic-blue hover:bg-btraffic-blue/5 transition-all group"
+                                            key={role}
+                                            onClick={() => { setData({ ...data, role }); nextStep(2); }}
+                                            className={`p-5 rounded-2xl border transition-all text-left flex items-center justify-between group ${data.role === role ? 'bg-btraffic-blue/10 border-btraffic-blue text-white' : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/20'}`}
+                                            data-track={`diagnostic-role-${role.toLowerCase()}`}
                                         >
-                                            <div className="flex justify-between items-center">
-                                                <span className="font-bold text-gray-300 group-hover:text-white">{p.label}</span>
-                                                <AlertCircle size={16} className="text-gray-600 group-hover:text-btraffic-blue" />
-                                            </div>
+                                            <span className="font-bold text-lg">{role}</span>
+                                            <Briefcase size={20} className="opacity-50 group-hover:opacity-100 transition-opacity" />
                                         </button>
                                     ))}
                                 </div>
@@ -216,47 +216,93 @@ export function SherlockWidget() {
 
                         {step === 2 && (
                             <div className="space-y-6">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-btraffic-purple uppercase tracking-[0.3em]">Fase 3: Activo vs Gasto</label>
-                                    <h3 className="text-2xl font-black uppercase tracking-tighter">Rendimiento Digital</h3>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black text-btraffic-purple uppercase tracking-[0.3em]">Fase 3: Diagnóstico de Dolor</label>
+                                    <h3 className="text-xl md:text-2xl font-black uppercase tracking-tighter">¿Cuál es su cuello de botella?</h3>
                                 </div>
-                                <p className="text-gray-400 text-sm">Tu presencia online actual, ¿te trae clientes todos los días automáticamente o es solo un gasto que 'hay que tener'?</p>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <button onClick={() => { setData({ ...data, assetStatus: 'activo' }); nextStep(); }} className="p-6 rounded-2xl border border-white/5 bg-white/5 hover:border-btraffic-lime hover:bg-btraffic-lime/5 transition-all text-center group">
-                                        <CheckCircle2 size={32} className="mx-auto mb-3 text-gray-600 group-hover:text-btraffic-lime" />
-                                        <div className="font-black uppercase text-xs">Es un Activo</div>
-                                    </button>
-                                    <button onClick={() => { setData({ ...data, assetStatus: 'gasto' }); nextStep(); }} className="p-6 rounded-2xl border border-white/5 bg-white/5 hover:border-red-500/50 hover:bg-red-500/5 transition-all text-center group">
-                                        <AlertCircle size={32} className="mx-auto mb-3 text-gray-600 group-hover:text-red-500" />
-                                        <div className="font-black uppercase text-xs">Es un Gasto</div>
-                                    </button>
+
+                                <div className="grid grid-cols-1 gap-4">
+                                    {[
+                                        { id: 'time', label: 'Falta de Tiempo Personal', icon: <Timer size={20} /> },
+                                        { id: 'sales', label: 'Ventas Estancadas / Inestables', icon: <TrendingUp size={20} /> },
+                                        { id: 'chaos', label: 'Caos Operativo / Dependencia', icon: <AtSign size={20} /> }
+                                    ].map((pain) => (
+                                        <button
+                                            key={pain.id}
+                                            onClick={() => { setData({ ...data, pain: pain.label }); nextStep(3); }}
+                                            className="p-5 rounded-2xl bg-white/5 border border-white/10 text-left flex items-center justify-between group hover:border-btraffic-purple/50 transition-all"
+                                            data-track={`diagnostic-pain-${pain.id}`}
+                                        >
+                                            <span className="font-bold text-lg">{pain.label}</span>
+                                            <span className="text-btraffic-purple opacity-50 group-hover:opacity-100 transition-opacity">{pain.icon}</span>
+                                        </button>
+                                    ))}
                                 </div>
                             </div>
                         )}
 
                         {step === 3 && (
                             <div className="space-y-6">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-btraffic-lime uppercase tracking-[0.3em]">Fase 4: El Número de Tranquilidad</label>
-                                    <h3 className="text-2xl font-black uppercase tracking-tighter">Visión Estratégica</h3>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black text-red-500 uppercase tracking-[0.3em]">Fase 4: Análisis de Activo</label>
+                                    <h3 className="text-xl md:text-2xl font-black uppercase tracking-tighter">¿Cómo percibe su web actual?</h3>
                                 </div>
-                                <div className="space-y-4">
-                                    <p className="text-gray-400 text-sm italic">"¿Cuál es el monto mensual que te permitiría saber que el negocio fluye sin tu presencia 24/7?"</p>
-                                    <div className="relative group">
-                                        <Wallet className="absolute left-4 top-4 text-gray-500 group-focus-within:text-btraffic-lime" size={18} />
-                                        <input
-                                            placeholder="Ej: $15,000"
-                                            className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 pl-12 focus:border-btraffic-lime outline-none transition-all font-bold text-lg"
-                                            value={data.tranquilityNumber} onChange={e => setData({ ...data, tranquilityNumber: e.target.value })}
-                                        />
-                                    </div>
-                                    <div className="flex gap-4">
-                                        <button onClick={() => { setData({ ...data, revenue: 'yes' }); analyze(); }} className="flex-1 p-5 rounded-2xl border border-white/5 bg-white/5 hover:border-btraffic-lime transition-all text-center">
-                                            <div className="font-black text-btraffic-lime">+$10k USD/mes</div>
-                                        </button>
-                                        <button onClick={() => { setData({ ...data, revenue: 'no' }); analyze(); }} className="flex-1 p-5 rounded-2xl border border-white/5 bg-white/5 hover:border-red-500/50 transition-all text-center opacity-50">
-                                            <div className="font-black">Menos de $10k</div>
-                                        </button>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <button
+                                        onClick={() => { setData({ ...data, assetStatus: 'activo' }); nextStep(4); }}
+                                        className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-btraffic-lime transition-all flex flex-col items-center gap-4 group"
+                                        data-track="diagnostic-status-activo"
+                                    >
+                                        <div className="p-4 rounded-full bg-btraffic-lime/10 text-btraffic-lime group-hover:scale-110 transition-transform"><Wallet size={32} /></div>
+                                        <span className="font-black uppercase tracking-widest text-[10px]">Un Activo</span>
+                                    </button>
+                                    <button
+                                        onClick={() => { setData({ ...data, assetStatus: 'gasto' }); nextStep(4); }}
+                                        className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-red-500 transition-all flex flex-col items-center gap-4 group"
+                                        data-track="diagnostic-status-gasto"
+                                    >
+                                        <div className="p-4 rounded-full bg-red-500/10 text-red-500 group-hover:scale-110 transition-transform"><TrendingUp className="rotate-180" size={32} /></div>
+                                        <span className="font-black uppercase tracking-widest text-[10px]">Un Gasto</span>
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {step === 4 && (
+                            <div className="space-y-8">
+                                <div className="space-y-2 text-center">
+                                    <label className="text-[10px] font-black text-btraffic-lime uppercase tracking-[0.4em]">Calibración de Resultados</label>
+                                    <h3 className="text-3xl font-black uppercase tracking-tighter italic">Su Número de Tranquilidad</h3>
+                                    <p className="text-gray-500 text-sm font-medium">¿Cuánto debería facturar su negocio al mes para que usted pueda desconectarse 100%?</p>
+                                </div>
+
+                                <div className="space-y-6">
+                                    <input
+                                        type="text"
+                                        placeholder="Ej: $15,000 USD"
+                                        className="w-full bg-white/5 border-b-2 border-white/10 p-4 text-center text-4xl font-black outline-none focus:border-btraffic-lime transition-all placeholder:opacity-20"
+                                        value={data.tranquilityNumber} onChange={e => setData({ ...data, tranquilityNumber: e.target.value })}
+                                    />
+
+                                    <div className="flex flex-col gap-4">
+                                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest text-center">¿Su negocio ya factura más de $10,000 USD/mes?</p>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <button
+                                                onClick={() => { setData({ ...data, revenue: 'yes' }); analyze(); }}
+                                                className={`py-4 rounded-2xl border font-black uppercase tracking-widest text-xs transition-all ${data.revenue === 'yes' ? 'bg-btraffic-lime text-black border-btraffic-lime' : 'bg-white/5 border-white/10 text-white hover:bg-white/10'}`}
+                                                data-track="diagnostic-revenue-yes"
+                                            >
+                                                SÍ
+                                            </button>
+                                            <button
+                                                onClick={() => { setData({ ...data, revenue: 'no' }); analyze(); }}
+                                                className={`py-4 rounded-2xl border font-black uppercase tracking-widest text-xs transition-all ${data.revenue === 'no' ? 'bg-white/10 border-white/30 text-white' : 'bg-white/5 border-white/10 text-white hover:bg-white/10'}`}
+                                                data-track="diagnostic-revenue-no"
+                                            >
+                                                AÚN NO
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -267,23 +313,22 @@ export function SherlockWidget() {
                 {status === 'analyzing' && (
                     <motion.div
                         key="analyzing"
-                        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                        className="flex flex-col items-center justify-center py-20 text-center space-y-8"
+                        initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.1 }}
+                        className="flex flex-col items-center justify-center py-20 space-y-8 text-center"
                     >
                         <div className="relative">
-                            <div className="w-24 h-24 border-4 border-btraffic-lime/20 rounded-full"></div>
-                            <div className="absolute inset-0 w-24 h-24 border-4 border-btraffic-lime border-t-transparent rounded-full animate-spin"></div>
-                            <Timer className="absolute inset-0 m-auto text-btraffic-lime animate-pulse" size={32} />
+                            <div className="w-24 h-24 rounded-full border-4 border-btraffic-lime/20 border-t-btraffic-lime animate-spin" />
+                            <TrendingUp className="absolute inset-0 m-auto text-btraffic-lime" size={32} />
                         </div>
-                        <div className="space-y-4">
-                            <div className="text-2xl font-black tracking-tighter uppercase italic">Analizando {data.web}</div>
-                            <div className="space-y-1 font-mono text-[10px] text-btraffic-lime/60 bg-black/40 p-4 rounded-xl border border-white/5">
-                                <div className="flex gap-2"><span>[RUN]</span> <span>SCANNING_MANUAL_PROCESSES...</span></div>
-                                <div className="flex gap-2"><span>[RUN]</span> <span>CALCULATING_OPEX_LEAKAGE...</span></div>
-                                <div className="flex gap-2"><span>[RUN]</span> <span>EVALUATING_B-OS_COMPATIBILITY...</span></div>
-                                <div className="flex gap-2 text-btraffic-blue/80"><span>[AI]</span> <span>GROQ_INTELLIGENCE_QUALIFYING...</span></div>
-                                <div className="flex gap-2 text-btraffic-purple/80"><span>[AI]</span> <span>GENERATING_PERSONALIZED_MESSAGE...</span></div>
-                            </div>
+                        <div className="space-y-2">
+                            <h3 className="text-2xl font-black uppercase tracking-tighter">Ejecutando Análisis Forense</h3>
+                            <p className="text-gray-500 font-mono text-[10px] animate-pulse">INICIALIZANDO MOTOR DE INTELIGENCIA BTRAFFIC...</p>
+                        </div>
+                        <div className="w-full max-w-xs bg-white/5 h-1 rounded-full overflow-hidden">
+                            <motion.div
+                                initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 2.5 }}
+                                className="h-full bg-btraffic-lime shadow-[0_0_10px_#A2FF00]"
+                            />
                         </div>
                     </motion.div>
                 )}
@@ -291,10 +336,9 @@ export function SherlockWidget() {
                 {status === 'result' && (
                     <motion.div
                         key="result"
-                        initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-                        className="text-center space-y-8"
+                        initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+                        className="text-center space-y-8 py-4"
                     >
-                        {/* Score de Inteligencia (si está disponible) */}
                         {intelligenceResult && (
                             <motion.div
                                 initial={{ opacity: 0, y: -10 }}
@@ -312,7 +356,7 @@ export function SherlockWidget() {
                             </motion.div>
                         )}
 
-                        {isQualified || (intelligenceResult && intelligenceResult.isQualified) ? (
+                        {isQualified ? (
                             <>
                                 <div className="inline-block p-6 bg-btraffic-lime/10 rounded-full border border-btraffic-lime/20">
                                     <CheckCircle2 className="text-btraffic-lime" size={64} />
@@ -322,17 +366,16 @@ export function SherlockWidget() {
                                     <div className="text-btraffic-lime font-bold uppercase tracking-widest text-xs">Perfil Estratégico Detectado</div>
                                 </div>
 
-                                {/* Mensaje personalizado de la IA o mensaje estándar */}
                                 <p className="text-gray-400 font-medium leading-relaxed">
                                     {intelligenceResult?.personalizedMessage || (
                                         <>
                                             {data.name}, el análisis de <span className="text-white">{data.web}</span> confirma una operación dependiente de tu presencia física. <br /><br />
-                                            Como <span className="text-white font-bold">{data.role}</span>, estás en la posición clave para ejecutar una arquitectura de orquestación. Tu <span className="italic">Número de Tranquilidad</span> ({data.tranquilityNumber}) es matemáticamente alcanzable eliminando tus cuellos de botella actuales.
+                                            Como <span className="text-white font-bold">{data.role}</span>, estás en la posición clave para ejecutar una arquitectura de orquestación.
                                         </>
                                     )}
                                 </p>
 
-                                <button onClick={handleWhatsAppRedirect} className="btn-premium w-full py-6 flex items-center justify-center gap-3 group text-base">
+                                <button onClick={handleWhatsAppRedirect} className="btn-premium w-full py-6 flex items-center justify-center gap-3 group text-base" data-track="diagnostic-cta-qualified">
                                     <MessageCircle size={24} className="group-hover:scale-110 transition-all" />
                                     AGENDAR SESIÓN ESTRATÉGICA
                                 </button>
@@ -353,13 +396,12 @@ export function SherlockWidget() {
                                 <p className="text-gray-400 font-medium leading-relaxed">
                                     {intelligenceResult?.personalizedMessage || (
                                         <>
-                                            {data.name}, el sistema ha detectado que <span className="text-white font-bold">{data.web}</span> necesita una base de procesos más robusta antes de escalar con un B-OS completo. <br /><br />
-                                            He preparado un <span className="text-btraffic-blue font-bold">Argumento Estratégico a medida</span> para que {data.web} logre su primer hito de facturación y califique pronto.
+                                            {data.name}, el sistema ha detectado que <span className="text-white font-bold">{data.web}</span> necesita una base de procesos más robusta antes de escalar.
                                         </>
                                     )}
                                 </p>
 
-                                <button onClick={handleWhatsAppRedirect} className="w-full py-6 rounded-2xl border border-white/10 hover:bg-white/5 transition-all flex items-center justify-center gap-3 group font-black uppercase tracking-widest text-sm">
+                                <button onClick={handleWhatsAppRedirect} className="w-full py-6 rounded-2xl border border-white/10 hover:bg-white/5 transition-all flex items-center justify-center gap-3 group font-black uppercase tracking-widest text-sm" data-track="diagnostic-cta-cimentacion">
                                     <MessageCircle size={24} className="group-hover:scale-110 transition-all" />
                                     RECIBIR ARGUMENTO A MEDIDA
                                 </button>

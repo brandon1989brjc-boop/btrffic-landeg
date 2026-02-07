@@ -39,7 +39,7 @@ const Navbar = () => {
             <nav className={`fixed top-[26px] w-full z-[100] transition-all duration-300 ${scrolled ? 'py-3 bg-btraffic-dark/80 backdrop-blur-xl border-b border-white/5' : 'py-6 bg-transparent'}`}>
                 <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center gap-2 group">
+                    <Link href="/" className="flex items-center gap-2 group" data-track="nav-logo">
                         <div className="w-9 h-9 rounded-lg bg-btraffic-lime flex items-center justify-center border border-white/10 group-hover:scale-105 transition-transform shadow-[0_0_15px_rgba(162,255,0,0.3)]">
                             <span className="font-black text-black text-base">B</span>
                         </div>
@@ -56,6 +56,7 @@ const Navbar = () => {
                                 key={link.name}
                                 href={link.href}
                                 className="hover:text-btraffic-lime transition-colors relative group"
+                                data-track={`nav-${link.name.toLowerCase().replace(/\s+/g, '-')}`}
                             >
                                 {link.name}
                                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-btraffic-lime group-hover:w-full transition-all duration-300" />
@@ -65,6 +66,7 @@ const Navbar = () => {
                         <Link
                             href="/academy"
                             className={`px-6 py-2.5 rounded-full font-black text-[10px] uppercase tracking-widest transition-all duration-300 flex items-center gap-2 ${isAcademy ? 'bg-white/10 border border-white/20 text-white' : 'bg-btraffic-lime text-black hover:scale-105 glow-lime shadow-lg shadow-btraffic-lime/20'}`}
+                            data-track="nav-aula"
                         >
                             Aula <ArrowRight size={12} />
                         </Link>
@@ -72,13 +74,14 @@ const Navbar = () => {
                         <div className="w-px h-4 bg-white/10 mx-2" />
 
                         <div className="flex gap-4 items-center">
-                            <a href="https://www.instagram.com/brandon_btraffic/" target="_blank" rel="noopener noreferrer" className="hover:text-btraffic-lime transition-colors"><Instagram size={14} /></a>
-                            <a href="https://www.linkedin.com/company/btraffic" target="_blank" rel="noopener noreferrer" className="hover:text-btraffic-lime transition-colors"><Linkedin size={14} /></a>
+                            <a href="https://www.instagram.com/brandon_btraffic/" target="_blank" rel="noopener noreferrer" className="hover:text-btraffic-lime transition-colors" data-track="nav-social-instagram"><Instagram size={14} /></a>
+                            <a href="https://www.linkedin.com/company/btraffic" target="_blank" rel="noopener noreferrer" className="hover:text-btraffic-lime transition-colors" data-track="nav-social-linkedin"><Linkedin size={14} /></a>
                         </div>
 
                         <Link
                             href="/portal"
                             className="bg-white/5 border border-white/10 px-6 py-2.5 rounded-full hover:bg-white/10 transition-all font-black"
+                            data-track="nav-acceso-portal"
                         >
                             Acceso
                         </Link>
@@ -88,6 +91,7 @@ const Navbar = () => {
                     <button
                         className="md:hidden p-2 text-white bg-white/5 rounded-lg border border-white/10"
                         onClick={() => setIsOpen(!isOpen)}
+                        data-track="nav-mobile-toggle"
                     >
                         {isOpen ? <X size={20} /> : <Menu size={20} />}
                     </button>
@@ -111,6 +115,7 @@ const Navbar = () => {
                                     href={link.href}
                                     onClick={() => setIsOpen(false)}
                                     className="text-4xl font-black uppercase tracking-tighter hover:text-btraffic-lime transition-colors"
+                                    data-track={`nav-mobile-${link.name.toLowerCase().replace(/\s+/g, '-')}`}
                                 >
                                     {link.name}
                                 </Link>
@@ -119,6 +124,7 @@ const Navbar = () => {
                                 href="/academy"
                                 onClick={() => setIsOpen(false)}
                                 className="text-4xl font-black uppercase tracking-tighter text-btraffic-lime flex items-center gap-4"
+                                data-track="nav-mobile-aula"
                             >
                                 Aula <ArrowRight size={32} />
                             </Link>
@@ -129,14 +135,15 @@ const Navbar = () => {
                                 href="/portal"
                                 onClick={() => setIsOpen(false)}
                                 className="w-full py-5 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center font-black uppercase tracking-widest"
+                                data-track="nav-mobile-acceso-portal"
                             >
                                 Acceso Clientes
                             </Link>
                             <div className="flex justify-between items-center">
                                 <span className="text-[10px] uppercase font-black tracking-widest text-gray-500">Btraffic © 2026</span>
                                 <div className="flex gap-4">
-                                    <Instagram size={20} className="text-gray-500" />
-                                    <Linkedin size={20} className="text-gray-500" />
+                                    <Instagram size={20} className="text-gray-500" data-track="nav-mobile-social-instagram" />
+                                    <Linkedin size={20} className="text-gray-500" data-track="nav-mobile-social-linkedin" />
                                 </div>
                             </div>
                         </div>

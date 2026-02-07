@@ -25,6 +25,7 @@ export const metadata: Metadata = {
 };
 
 import NavbarWrapper from "@/components/layout/NavbarWrapper";
+import { BtrafficTracker } from "@/components/layout/BtrafficTracker";
 
 export default function RootLayout({
     children,
@@ -36,21 +37,10 @@ export default function RootLayout({
             <head>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-                <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet" />
-                {/* Protocolo B-OS: Tracking Forense n8n */}
-                <script
-                    dangerouslySetInnerHTML={{
-                        __html: `
-              (function(n,8,n){
-                window.n8n_tracker = {
-                  webhook: 'https://n8n.btraffic.com/webhook/analytics-web',
-                  project: 'Btraffic-Agency-V2'
-                };
-              })();
-            `}}
-                />
+                <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet" />
             </head>
-            <body className="bg-btraffic-dark overflow-x-hidden antialiased">
+            <body className="bg-btraffic-dark overflow-x-hidden antialiased font-['Outfit']">
+                <BtrafficTracker />
                 <NavbarWrapper />
                 {children}
             </body>

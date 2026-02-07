@@ -16,7 +16,7 @@
 body {
     color: var(--foreground);
     background: var(--background);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Outfit', sans-serif;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -25,15 +25,16 @@ body {
 }
 
 .glass-panel {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    @apply bg-white/[0.03] backdrop-blur-xl border border-white/5;
+}
+
+.glass-card {
+    @apply glass-panel rounded-[40px] hover:border-white/10 transition-all duration-500 shadow-[0_0_50px_rgba(0,0,0,0.5)];
 }
 
 .btn-premium {
-    @apply relative overflow-hidden px-8 py-4 rounded-full font-black text-xs uppercase tracking-widest transition-all duration-300;
+    @apply relative overflow-hidden px-8 py-4 rounded-full font-black text-xs uppercase tracking-widest transition-all duration-300 bg-btraffic-lime text-black flex items-center justify-center gap-2;
     background: linear-gradient(to right, #A2FF00, #00E4FF);
-    color: #000000;
 }
 
 .btn-premium:hover {
@@ -43,6 +44,14 @@ body {
 
 .glow-lime {
     box-shadow: 0 0 20px rgba(162, 255, 0, 0.2);
+}
+
+.glow-blue {
+    box-shadow: 0 0 20px rgba(0, 228, 255, 0.2);
+}
+
+.glow-purple {
+    box-shadow: 0 0 20px rgba(142, 45, 226, 0.2);
 }
 
 @keyframes marquee {
@@ -56,27 +65,36 @@ body {
     animation: marquee 40s linear infinite;
 }
 
+/* Scrollbar personalizada Premium */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #050505;
+}
+::-webkit-scrollbar-thumb {
+    background: #1A1A1A;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #A2FF00;
+}
+
 /* Ajustes de Responsividad Global Btraffic */
 @media (max-width: 768px) {
     h1 {
-        font-size: 3.5rem !important;
-        line-height: 0.9 !important;
+        @apply text-5xl leading-[0.9] !important;
     }
     h2 {
-        font-size: 2.5rem !important;
-        line-height: 1 !important;
+        @apply text-4xl leading-none !important;
     }
     .btn-premium {
-        width: 100%;
-        text-align: center;
-        padding: 1.25rem !important;
+        @apply w-full text-center py-5 !important;
     }
     .glass-panel {
-        padding: 1.5rem !important;
-        border-radius: 24px !important;
+        @apply p-6 rounded-3xl !important;
     }
     nav {
-        padding-left: 1.5rem !important;
-        padding-right: 1.5rem !important;
+        @apply px-6 !important;
     }
 }

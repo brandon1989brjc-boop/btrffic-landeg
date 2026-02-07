@@ -8,20 +8,14 @@ import {
     ArrowRight,
     BarChart3,
     Cpu,
-    ShieldCheck,
     Zap,
+    Activity,
     Instagram,
     Linkedin,
-    X as CloseIcon,
-    X,
-    Layout,
-    Database,
-    Activity,
-    Target,
-    Share2,
-    Server
+    X
 } from 'lucide-react';
 import ROISection from '@/components/ROISection';
+import { FeatureCard, FeatureModal } from '@/components/sections/FeatureComponents';
 
 // Lazy loading del widget Sherlock
 const SherlockWidget = dynamic(
@@ -123,10 +117,14 @@ export default function Home() {
                                 el?.scrollIntoView({ behavior: 'smooth' });
                             }}
                             className="btn-premium"
+                            data-track="hero-diagnose"
                         >
                             Iniciar Diagnóstico Btraffic
                         </button>
-                        <button className="px-10 py-5 rounded-full border border-white/10 font-bold hover:bg-white/5 transition-all flex items-center gap-2 text-sm uppercase tracking-widest text-white">
+                        <button
+                            className="px-10 py-5 rounded-full border border-white/10 font-bold hover:bg-white/5 transition-all flex items-center gap-2 text-sm uppercase tracking-widest text-white"
+                            data-track="hero-method"
+                        >
                             Ver el Método Swarm <ArrowRight size={18} />
                         </button>
                     </div>
@@ -188,6 +186,28 @@ export default function Home() {
 
             <ROISection />
 
+            <section id="last-call" className="py-32 px-8 bg-btraffic-lime/[0.02] border-y border-btraffic-lime/10">
+                <div className="max-w-4xl mx-auto text-center space-y-10">
+                    <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">
+                        ¿LISTO PARA <span className="text-btraffic-lime">DEJAR DE PERDER</span> DINERO?
+                    </h2>
+                    <p className="text-xl text-gray-400 font-medium">
+                        Su tabla de ROI es teórica hasta que conectamos los sensores reales. Inicie el diagnóstico forense ahora y descubra cuánto está dejando sobre la mesa.
+                    </p>
+                    <div className="pt-6">
+                        <button
+                            onClick={() => {
+                                document.getElementById('sherlock')?.scrollIntoView({ behavior: 'smooth' });
+                            }}
+                            className="btn-premium px-16 py-6 text-xl"
+                            data-track="last-call-diagnose"
+                        >
+                            EJECUTAR DIAGNÓSTICO AHORA
+                        </button>
+                    </div>
+                </div>
+            </section>
+
             <footer className="py-20 border-t border-white/5 flex flex-col items-center gap-10">
                 <div className="flex gap-10">
                     <a href="https://www.instagram.com/brandon_btraffic/" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-btraffic-lime transition-all"><Instagram size={24} /></a>
@@ -196,11 +216,11 @@ export default function Home() {
                 </div>
 
                 <div className="flex flex-wrap justify-center gap-6 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
-                    <Link href="/legal/privacy" className="hover:text-white transition-colors">Política de Privacidad</Link>
+                    <Link href="/legal/privacy" className="hover:text-white transition-colors" data-track="footer-privacy">Política de Privacidad</Link>
                     <span className="opacity-20">•</span>
-                    <Link href="/legal/privacy" className="hover:text-white transition-colors">Aviso Legal</Link>
+                    <Link href="/legal/terms" className="hover:text-white transition-colors" data-track="footer-terms">Aviso Legal</Link>
                     <span className="opacity-20">•</span>
-                    <Link href="/legal/privacy" className="hover:text-white transition-colors">Cookies</Link>
+                    <Link href="/legal/cookies" className="hover:text-white transition-colors" data-track="footer-cookies">Cookies</Link>
                 </div>
 
                 <div className="opacity-30 text-[10px] font-bold tracking-[0.4em] uppercase text-center leading-relaxed">
@@ -211,111 +231,3 @@ export default function Home() {
     );
 }
 
-function FeatureCard({ icon, title, desc, onClick }: { icon: any, title: string, desc: string, onClick?: () => void }) {
-    return (
-        <motion.div
-            whileHover={{ y: -10 }}
-            className="group cursor-pointer"
-            onClick={onClick}
-        >
-            <div className="mb-8 p-6 w-fit rounded-3xl bg-white/5 group-hover:bg-btraffic-lime/20 transition-all duration-500 border border-white/5 group-hover:border-btraffic-lime/30">
-                {icon}
-            </div>
-            <h3 className="text-3xl font-black mb-6 tracking-tight uppercase">{title}</h3>
-            <p className="text-gray-500 leading-relaxed font-medium text-lg mb-4">{desc}</p>
-            <div className="flex items-center gap-2 text-btraffic-lime text-[10px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">
-                Ver Argumento de Valor <ArrowRight size={14} />
-            </div>
-        </motion.div>
-    );
-}
-
-function FeatureModal({ data, onClose }: { data: any, onClose: () => void }) {
-    return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-xl"
-            onClick={onClose}
-        >
-            <motion.div
-                initial={{ scale: 0.9, y: 20, opacity: 0 }}
-                animate={{ scale: 1, y: 0, opacity: 1 }}
-                exit={{ scale: 0.9, y: 20, opacity: 0 }}
-                className="w-full max-w-5xl bg-[#0a0a0a] border border-white/10 rounded-[40px] overflow-hidden relative"
-                onClick={(e) => e.stopPropagation()}
-            >
-                <button
-                    onClick={onClose}
-                    className="absolute top-8 right-8 p-3 rounded-full bg-white/5 hover:bg-white/10 transition-colors z-10"
-                >
-                    <CloseIcon size={20} />
-                </button>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2">
-                    {/* Left side: Argument and Stats */}
-                    <div className="p-12 md:p-16 space-y-10">
-                        <div className="flex items-center gap-4">
-                            <div className="p-4 rounded-2xl bg-white/5">
-                                {data.icon}
-                            </div>
-                            <h2 className="text-4xl font-black uppercase tracking-tighter">{data.title}</h2>
-                        </div>
-
-                        <p className="text-xl md:text-2xl text-gray-400 font-medium leading-relaxed italic">
-                            "{data.argument}"
-                        </p>
-
-                        <div className="grid grid-cols-3 gap-4">
-                            {data.stats.map((stat: any, i: number) => (
-                                <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                                    <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">{stat.label}</div>
-                                    <div className={`text-lg font-black text-${data.color}`}>{stat.value}</div>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="pt-8">
-                            <button className="btn-premium w-full md:w-auto">
-                                Desplegar en mi Negocio
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Right side: Visualization / Steps */}
-                    <div className="bg-white/[0.02] p-12 md:p-16 border-l border-white/5">
-                        <h4 className="text-xs font-black uppercase tracking-[0.3em] text-gray-500 mb-10">Flujo de Orquestación</h4>
-
-                        <div className="space-y-6 relative">
-                            {/* Vertical line */}
-                            <div className="absolute left-[15px] top-4 bottom-4 w-px bg-gradient-to-b from-btraffic-lime via-btraffic-blue to-btraffic-purple opacity-20" />
-
-                            {data.steps.map((step: string, i: number) => (
-                                <motion.div
-                                    initial={{ x: 20, opacity: 0 }}
-                                    animate={{ x: 0, opacity: 1 }}
-                                    transition={{ delay: i * 0.1 }}
-                                    key={i}
-                                    className="flex items-center gap-6 group"
-                                >
-                                    <div className="w-8 h-8 rounded-full bg-btraffic-dark border border-white/10 flex items-center justify-center text-[10px] font-bold text-gray-500 group-hover:border-btraffic-lime group-hover:text-btraffic-lime transition-all z-10">
-                                        {i + 1}
-                                    </div>
-                                    <div className="text-lg font-bold text-gray-300 group-hover:text-white transition-colors">{step}</div>
-                                </motion.div>
-                            ))}
-
-                            <div className="mt-12 p-8 rounded-3xl bg-btraffic-lime/5 border border-btraffic-lime/20 flex flex-col items-center text-center gap-4">
-                                <Activity className="text-btraffic-lime animate-pulse" size={32} />
-                                <div className="text-xs font-bold uppercase tracking-widest italic text-gray-400">
-                                    Monitoreo en Tiempo Real Activado
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </motion.div>
-        </motion.div>
-    );
-}
